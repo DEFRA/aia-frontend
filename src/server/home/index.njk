@@ -1,0 +1,104 @@
+{% extends 'layouts/page.njk' %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/pagination/macro.njk" import govukPagination %}
+
+{% block pageTitle %}Upload Document{% endblock %}
+
+{% block content %}
+
+<h1 class="govuk-heading-m">Upload the document to generate AI-powered insights</h1>
+
+<form id="uploadForm" method="post" enctype="multipart/form-data" novalidate>
+  <div class="govuk-form-group" id="templateTypeGroup">
+    <label class="govuk-label" for="templateType">
+      Document Template Type
+    </label>
+    <p class="govuk-error-message app-error-message" id="templateTypeError">
+      <span class="govuk-visually-hidden">Error:</span>
+      <span id="templateTypeErrorText"></span>
+    </p>
+    <select class="govuk-select" id="templateType" name="templateType" aria-describedby="templateTypeError">
+      <option value="">Select Template Type</option>
+      <option value="SDA" {% if templateType == 'SDA' %}selected{% endif %}>SDA</option>
+    </select>
+  </div>
+  <div class="govuk-form-group" id="policyDocxGroup">
+    <label class="govuk-label" for="policyDocx">Select DOCX file</label>
+    <p class="govuk-error-message app-error-message" id="policyDocxError">
+      <span class="govuk-visually-hidden">Error:</span>
+      <span id="policyDocxErrorText"></span>
+    </p>
+    <div class="file-selection-area">
+      <input class="govuk-file-upload" id="policyDocx" name="policyDocx" type="file"
+        accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        aria-describedby="policyDocxError"
+        data-max-file-size-bytes="{{ maxUploadFileSizeBytes }}">
+      <div id="fileSpinner" class="spinner"></div>
+    </div>
+  </div>
+  {{ govukButton({ text: "Upload", attributes: { type: "submit", id: "submitButton" } }) }}
+</form>
+
+
+<div class="govuk-form-group upload-history-container">
+  <div class="upload-history-header">
+    <h2 class="govuk-heading-m">Upload History</h2>
+  </div>
+  
+<table class="govuk-table">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th class="govuk-table__header">Filename</th>
+        <th class="govuk-table__header">Template Type</th>
+        <th class="govuk-table__header">Status</th>
+        <th class="govuk-table__header">Timestamp</th>
+        <th class="govuk-table__header">Action</th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      {% for upload in uploads %}
+      <tr class="govuk-table__row">
+        <td class="govuk-table__cell">{{ upload.filename }}</td>
+        <td class="govuk-table__cell">{{ upload.analysisType }}</td>
+        <td class="govuk-table__cell"><span class="status-badge status-{{ upload.status | lower }}">{{ upload.status }}</span></td>
+        <td class="govuk-table__cell">{{ upload.timestamp }}</td>
+        <td class="govuk-table__cell">
+          {% if upload.status == 'Completed' %}
+            <a href="/result?docID={{ upload.docID }}" class="govuk-link">View Results</a>
+          {% elif upload.status == 'Error' %}
+            
+          {% else %}
+            <span class="govuk-hint">Processing...</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+
+  {# Pagination row with summary and navigation #}
+    {% if pagination.summary or pagination.items or pagination.previous or pagination.next %}
+    <div class="app-pagination-row app-pagination-row--{{ paginationAlignment | default('left') }} govuk-!-margin-top-6">
+
+      {# GOV.UK Pagination #}
+      {% if pagination.items or pagination.previous or pagination.next %}
+      <div class="app-pagination-row__nav">
+        {{ govukPagination({
+          items: pagination.items,
+          previous: pagination.previous,
+          next: pagination.next,
+          landmarkLabel: 'Pagination'
+        }) }}
+      </div>
+      {% endif %}
+
+      {# Pagination summary #}
+      {% if pagination.summary %}
+      <p class="govuk-body app-pagination-row__summary" data-testid="pagination-summary">Showing <strong>{{ pagination.summary.startItem }}</strong> to <strong>{{ pagination.summary.endItem }}</strong> of <strong>{{ pagination.summary.totalItems }}</strong> documents</p>
+      {% endif %}
+
+    </div>
+    {% endif %}
+
+{% endblock %}

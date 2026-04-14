@@ -1,0 +1,170 @@
+[
+  {
+    "filename": "Test Project v0.1.docx",
+    "analysisType": "Solution Design Team",
+    "status": "Analysing",
+    "timestamp": "31/03/2026 16:45:00",
+    "resultPath": "",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Solution Design Document - AI Assure v0.01.docx",
+    "analysisType": "Solution Design Team",
+    "status": "Completed",
+    "timestamp": "28/03/2026 15:30:00",
+    "resultPath": "result",
+    "docID": "UUID-1234-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Alpha v0.01.docx",
+    "analysisType": "Amber Team",
+    "status": "Error",
+    "timestamp": "25/03/2026 14:10:00",
+    "resultPath": "error",
+    "docID": "UUID-1234-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.01.docx",
+    "analysisType": "Red Team",
+    "status": "Completed",
+    "timestamp": "22/03/2026 13:05:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.02.docx",
+    "analysisType": "Green Team",
+    "status": "Completed",
+    "timestamp": "19/03/2026 12:40:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.03.docx",
+    "analysisType": "Green Team",
+    "status": "Completed",
+    "timestamp": "16/02/2026 11:25:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.04.docx",
+    "analysisType": "Green Team",
+    "status": "Completed",
+    "timestamp": "13/02/2026 10:15:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.05.docx",
+    "analysisType": "Green Team",
+    "status": "Completed",
+    "timestamp": "31/01/2026 09:50:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.06.docx",
+    "analysisType": "Green Team",
+    "status": "Completed",
+    "timestamp": "28/01/2026 08:35:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.07.docx",
+    "analysisType": "Red Team",
+    "status": "Completed",
+    "timestamp": "25/01/2026 16:20:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.08.docx",
+    "analysisType": "Green Team",
+    "status": "Completed",
+    "timestamp": "22/01/2026 15:00:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.09.docx",
+    "analysisType": "Green Team",
+    "status": "Completed",
+    "timestamp": "19/01/2026 13:45:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.10.docx",
+    "analysisType": "Red Team",
+    "status": "Completed",
+    "timestamp": "31/12/2025 12:30:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.11.docx",
+    "analysisType": "Green Team",
+    "status": "Completed",
+    "timestamp": "28/12/2025 11:15:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.12.docx",
+    "analysisType": "Amber Team",
+    "status": "Completed",
+    "timestamp": "25/12/2025 10:05:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.13.docx",
+    "analysisType": "Green Team",
+    "status": "Completed",
+    "timestamp": "22/12/2025 09:40:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.14.docx",
+    "analysisType": "Red Team",
+    "status": "Completed",
+    "timestamp": "19/11/2025 16:10:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.15.docx",
+    "analysisType": "Green Team",
+    "status": "Completed",
+    "timestamp": "16/11/2025 14:55:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.16.docx",
+    "analysisType": "Red Team",
+    "status": "Completed",
+    "timestamp": "13/11/2025 13:20:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.17.docx",
+    "analysisType": "Red Team",
+    "status": "Completed",
+    "timestamp": "31/10/2025 11:35:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  },
+  {
+    "filename": "Project Beta v1.18.docx",
+    "analysisType": "Green Team",
+    "status": "Completed",
+    "timestamp": "31/03/2025 09:00:00",
+    "resultPath": "report",
+    "docID": "UUID-4321-5678-9012-abcdef123456"
+  }
+]

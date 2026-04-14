@@ -1,0 +1,190 @@
+// Home page upload form and history table styles
+
+// Initially hidden validation error messages (shown via JS)
+.app-error-message {
+  display: none;
+}
+
+// File upload error state
+.govuk-file-upload--error {
+  border-color: #ca3535;
+
+  &:focus {
+    border-color: #ca3535;
+    outline-color: #ca3535;
+  }
+}
+
+// Form styling
+.template-type {
+  padding: 8px 12px;
+  border: 2px solid #0b0c0c;
+  border-radius: 4px;
+  font-size: 16px;
+  background: #ffffff;
+  min-width: 200px;
+}
+
+.file-spinner {
+  display: none;
+}
+
+.loading-message {
+  display: none;
+
+  .spinner {
+    display: inline-block;
+    margin-right: 10px;
+  }
+}
+
+.file-info {
+  margin-top: 1em;
+  display: none;
+}
+
+// Upload history section
+.upload-history-container {
+  margin-top: 1em;
+}
+
+.upload-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.upload-history-controls {
+  display: flex;
+  align-items: center;
+}
+
+.page-size-label {
+  margin-right: 0.5em;
+}
+
+.page-size {
+  min-width: 2rem;
+}
+
+// Pagination styling
+.pagination {
+  margin-top: 1em;
+}
+
+.app-pagination-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-pagination-row__nav {
+  display: flex;
+}
+
+// Override govuk-pagination's default centred margin so alignment is controlled by the row modifier.
+.app-pagination-row .govuk-pagination {
+  margin: 0;
+}
+
+.app-pagination-row__summary {
+  margin: 0;
+  margin-top: 4px;
+}
+
+.app-pagination-row--left {
+  align-items: flex-start;
+}
+
+.app-pagination-row--left .app-pagination-row__nav,
+.app-pagination-row--left .govuk-pagination {
+  justify-content: flex-start;
+}
+
+.app-pagination-row--left .app-pagination-row__summary {
+  text-align: left;
+}
+
+.app-pagination-row--right {
+  align-items: flex-end;
+}
+
+.app-pagination-row--right .app-pagination-row__nav,
+.app-pagination-row--right .govuk-pagination {
+  justify-content: flex-end;
+}
+
+.app-pagination-row--right .app-pagination-row__summary {
+  text-align: right;
+}
+
+// Table cell styling
+.govuk-table__cell {
+  font-size: 14px;
+  vertical-align: middle;
+  // padding: 8px 12px;
+}
+
+.govuk-table__header {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+// Status badge styling
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.status-analysing {
+  background: #ff9800;
+  color: #ffffff;
+  animation: pulse 2s infinite;
+}
+
+.status-processing {
+  background: #2196f3;
+  color: #ffffff;
+}
+
+.status-completed {
+  background: #00703c;
+  color: #ffffff;
+}
+
+.status-failed {
+  background: #f44336;
+  color: #ffffff;
+}
+
+.status-error {
+  background: #f44336;
+  color: #ffffff;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+// Hint text styling
+.govuk-hint {
+  font-size: 14px;
+  color: #626a6e;
+}

@@ -1,0 +1,112 @@
+@use "variables/colours" as *;
+
+// Single-row header: [GOV.UK logo left] [Service name CENTRE] [Sign out right]
+// The outer row spans full viewport width; inner content is constrained to the
+// govuk-width-container (max-width: 960px, margin: auto) — same as page content.
+.app-header-row {
+  position: relative;
+  display: block; // both children are absolute, so block gives a stable height
+  background: #1d70b8;
+  border-bottom: 1px solid $app-light-grey;
+  min-height: 50px;
+}
+
+// GOV.UK logo — overlays the full row width so its inner govuk-width-container
+// (max-width: 960px, margin: auto) aligns the logo with page content
+.app-header-row .app-header {
+  position: absolute;
+  inset: 0;
+  border-bottom: none;
+  background: transparent;
+  pointer-events: none;
+  z-index: 1;
+}
+
+// Re-enable pointer events on the logo link only
+.app-header-row .app-header .govuk-header__logo {
+  pointer-events: auto;
+}
+
+// Let the width-container keep its natural max-width/margin behaviour
+.app-header-row .app-header .govuk-width-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+// Logo vertical padding
+.app-header-row .govuk-header__logo {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+// Service navigation overlays the full row so the service name can be
+// truly centred across the entire width (including the logo area)
+.app-header-row .govuk-service-navigation {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  border-bottom: none;
+  color: #ffffff;
+  pointer-events: none;
+}
+
+// Re-enable pointer events on the interactive elements
+.app-header-row .govuk-service-navigation__service-name,
+.app-header-row .govuk-service-navigation__wrapper {
+  pointer-events: auto;
+}
+
+// Inner width-container: keep default max-width/margin so content aligns with page
+.app-header-row .govuk-service-navigation .govuk-width-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+// Service nav container: flex row, full height
+.app-header-row .govuk-service-navigation__container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 50px;
+}
+
+// Service name: absolutely centred within the width-container
+.app-header-row .govuk-service-navigation__service-name {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 700;
+  white-space: nowrap;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+// Sign out: pinned to the right of the width-container
+.app-header-row .govuk-service-navigation__wrapper {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+}
+
+.app-header-row .govuk-service-navigation__list {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// Link colours inside the blue bar
+.app-header-row .govuk-service-navigation__link:link,
+.app-header-row .govuk-service-navigation__link:visited,
+.app-header-row .govuk-service-navigation__link:hover {
+  color: #ffffff;
+}
+

@@ -1,0 +1,18 @@
+{% extends 'layouts/page.njk' %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block pageTitle %}Signed out{% endblock %}
+
+{% block content %}
+
+  {{ govukPanel({
+    titleText: "You have signed out",
+    html: "Thank you for using AI Assure Architecture Governance."
+  }) }}
+
+  <p class="govuk-body govuk-!-margin-top-6">
+    To use the service again, <a class="govuk-link" href="/">sign back in</a>.
+  </p>
+
+{% endblock %}

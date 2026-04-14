@@ -1,0 +1,24 @@
+{% extends 'layouts/page.njk' %}
+
+{% block pageTitle %}Analysis Status{% endblock %}
+
+{% block content %}
+
+<a href="/" class="govuk-back-link no-print">Back to Upload</a>
+
+<div class="govuk-warning-text">
+  <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+  <strong class="govuk-warning-text__text">
+    <span class="govuk-visually-hidden">Warning</span>
+    AI-generated content may be incorrect or incomplete. Please review the analysis result carefully before making any decisions based on them.
+  </strong>
+</div>
+
+<script type="text/plain" id="markdownSource">{{ markdownContent | safe }}</script>
+<div id="markdownRenderer" class="govuk-body markdown-content"></div>
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  <script type="module" src="{{ getAssetPath('markdown-handler.js') }}"></script>
+{% endblock %}
