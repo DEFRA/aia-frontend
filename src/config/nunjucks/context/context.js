@@ -28,6 +28,7 @@ export function context(request) {
     maxUploadFileSizeBytes: config.get('upload.maxFileSizeMb') * 1024 * 1024,
     serviceUrl: '/',
     breadcrumbs: [],
+    isAuthenticationRequired: config.get('isAuthenticationRequired'),
     getAssetPath(asset) {
       const webpackAssetPath = webpackManifest?.[asset]
       return `${assetPath}/${webpackAssetPath ?? asset}`

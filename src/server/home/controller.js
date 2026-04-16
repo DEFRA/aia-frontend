@@ -11,11 +11,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const uploadsDataRaw = readFileSync(`${__dirname}/uploads.json`, 'utf8')
 const uploadsData = JSON.parse(uploadsDataRaw)
 
-const ITEMS_PER_PAGE = 10
-
 function buildPageData(requestedPage) {
+  const itemsPerPage = config.get('pagination.itemsPerPage')
   const totalItems = uploadsData.length
-  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE)
+  const totalPages = Math.ceil(totalItems / itemsPerPage)
 
   // Clamp page number to valid range
   const currentPage = Math.min(
@@ -23,8 +22,8 @@ function buildPageData(requestedPage) {
     totalPages
   )
 
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = Math.min(startIndex + itemsPerPage, totalItems)
   const pageUploads = uploadsData.slice(startIndex, endIndex)
 
   const pagination = {

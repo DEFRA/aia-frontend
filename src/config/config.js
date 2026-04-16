@@ -63,6 +63,12 @@ export const config = convict({
       format: ['left', 'right'],
       default: 'left',
       env: 'PAGINATION_ALIGNMENT'
+    },
+    itemsPerPage: {
+      doc: 'Number of items to display per page',
+      format: 'int',
+      default: 10,
+      env: 'ITEMS_PER_PAGE'
     }
   },
   result: {
@@ -140,6 +146,12 @@ export const config = convict({
     format: Boolean,
     default: isProduction,
     env: 'ENABLE_SECURE_CONTEXT'
+  },
+  isAuthenticationRequired: {
+    doc: 'Whether authentication is required, controls visibility of the Sign out button',
+    format: Boolean,
+    default: false,
+    env: 'IS_AUTHENTICATION_REQUIRED'
   },
   session: {
     cache: {
