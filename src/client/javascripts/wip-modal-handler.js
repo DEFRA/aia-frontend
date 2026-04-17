@@ -1,3 +1,8 @@
+export function openWipModal() {
+  const modal = document.getElementById('wipModal')
+  if (modal) modal.classList.add('is-open')
+}
+
 export function initWipModal() {
   const modal = document.getElementById('wipModal')
   if (!modal) return
@@ -19,7 +24,8 @@ export function initWipModal() {
   })
 
   // Close via the Close button
-  document.getElementById('wipModalClose').addEventListener('click', closeModal)
+  const closeBtn = document.getElementById('wipModalClose')
+  if (closeBtn) closeBtn.addEventListener('click', closeModal)
 
   // Close by clicking the overlay backdrop
   modal.addEventListener('click', function (e) {

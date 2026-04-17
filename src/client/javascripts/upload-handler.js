@@ -12,6 +12,7 @@
  */
 
 import { validateDocxFile } from './file-validator.js'
+import { openWipModal } from './wip-modal-handler.js'
 
 // ── Error display helpers ──────────────────────────────────────────────────────
 
@@ -128,19 +129,24 @@ export function initUploadHandler() {
         showFileError('Please select a file')
         hasError = true
       } else {
-        const result = await validateDocxFile(file, { maxFileSizeBytes })
-        if (!result.valid) {
-          showFileError(result.message)
+        try {
+          const result = await validateDocxFile(file, { maxFileSizeBytes })
+          if (!result.valid) {
+            showFileError(result.message)
+            hasError = true
+          } else {
+            clearFileError()
+          }
+        } catch {
+          showFileError('Unable to validate the file. Please try again.')
           hasError = true
-        } else {
-          clearFileError()
         }
       }
 
       if (hasError) return
 
-      // All valid — submit
-      form.submit()
+      // All valid — show WIP modal instead of submitting
+      openWipModal()
     })
   }
 }

@@ -4,6 +4,11 @@
 
 import { vi } from 'vitest'
 import { initUploadHandler } from './upload-handler.js'
+import { openWipModal } from './wip-modal-handler.js'
+
+vi.mock('./wip-modal-handler.js', () => ({
+  openWipModal: vi.fn()
+}))
 
 // ── DOM helpers ────────────────────────────────────────────────────────────────
 
@@ -73,6 +78,7 @@ function attachFile(input, file) {
 
 describe('initUploadHandler', () => {
   beforeEach(() => {
+    vi.clearAllMocks()
     buildDOM()
     initUploadHandler()
   })
@@ -247,17 +253,15 @@ describe('initUploadHandler', () => {
       expect(policyDocxErrorText.textContent).toContain('Please select a file')
     })
 
-    test('submits the form when template and valid file are provided', async () => {
+    test('opens the WIP modal when template and valid file are provided', async () => {
       const { form, sel, fileInput } = getEls()
       sel.value = 'SDA'
       attachFile(fileInput, makeFile(validDocxBytes()))
 
-      const submitSpy = vi.spyOn(form, 'submit').mockImplementation(() => {})
-
       form.dispatchEvent(new Event('submit', { bubbles: true }))
       await new Promise((resolve) => setTimeout(resolve, 100))
 
-      expect(submitSpy).toHaveBeenCalledTimes(1)
+      expect(openWipModal).toHaveBeenCalledTimes(1)
     })
 
     test('clears file error when file is valid on submit', async () => {

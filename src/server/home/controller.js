@@ -11,6 +11,43 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const uploadsDataRaw = readFileSync(`${__dirname}/uploads.json`, 'utf8')
 const uploadsData = JSON.parse(uploadsDataRaw)
 
+/**
+ * Build GOV.UK pagination items with ellipsis for large page counts.
+ * Always shows: first, last, current, and up to 1 neighbour on each side.
+ */
+function buildPaginationItems(currentPage, totalPages) {
+  if (totalPages <= 1) return []
+
+  const page = (n) => ({
+    number: n,
+    href: `?page=${n}`,
+    current: n === currentPage
+  })
+  const ellipsis = () => ({ ellipsis: true })
+
+  // Collect the page numbers that should always be shown
+  const visible = new Set([
+    1,
+    totalPages,
+    currentPage,
+    currentPage - 1,
+    currentPage + 1
+  ])
+
+  const pages = Array.from(visible)
+    .filter((n) => n >= 1 && n <= totalPages)
+    .sort((a, b) => a - b)
+
+  const items = []
+  for (let i = 0; i < pages.length; i++) {
+    if (i > 0 && pages[i] - pages[i - 1] > 1) {
+      items.push(ellipsis())
+    }
+    items.push(page(pages[i]))
+  }
+  return items
+}
+
 function buildPageData(requestedPage) {
   const itemsPerPage = config.get('pagination.itemsPerPage')
   const totalItems = uploadsData.length
@@ -32,14 +69,7 @@ function buildPageData(requestedPage) {
       endItem: endIndex,
       totalItems
     },
-    items: Array.from({ length: totalPages }, (_, i) => {
-      const pageNum = i + 1
-      return {
-        number: pageNum,
-        href: `?page=${pageNum}`,
-        current: pageNum === currentPage
-      }
-    }),
+    items: buildPaginationItems(currentPage, totalPages),
     previous:
       currentPage > 1
         ? {
