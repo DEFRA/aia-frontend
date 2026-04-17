@@ -64,7 +64,7 @@
         <td class="govuk-table__cell">{{ upload.timestamp }}</td>
         <td class="govuk-table__cell">
           {% if upload.status == 'Completed' %}
-            <a href="/result?docID={{ upload.docID }}" class="govuk-link">View Results</a>
+            <a href="#" class="govuk-link js-open-wip-modal">View Results</a>
           {% elif upload.status == 'Error' %}
             
           {% else %}
@@ -100,5 +100,14 @@
 
     </div>
     {% endif %}
+
+{# Work In Progress modal #}
+<div id="wipModal" class="app-modal-overlay" aria-modal="true" role="dialog" aria-labelledby="wipModalTitle">
+  <div class="app-modal">
+    <h2 class="govuk-heading-m" id="wipModalTitle">Work in progress</h2>
+    <p class="govuk-body">This feature is currently under development and will be available soon.</p>
+    <button class="govuk-button govuk-button--secondary" id="wipModalClose">Close</button>
+  </div>
+</div>
 
 {% endblock %}
