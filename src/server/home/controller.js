@@ -2,14 +2,8 @@
  * A GDS styled example home page controller.
  * Provided as an example, remove or modify as required.
  */
-import { readFileSync } from 'fs'
-import { fileURLToPath } from 'url'
-import { dirname } from 'path'
 import { config } from '../../config/config.js'
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const uploadsDataRaw = readFileSync(`${__dirname}/uploads.json`, 'utf8')
-const uploadsData = JSON.parse(uploadsDataRaw)
+import { buildBackendHeaders } from '../common/helpers/backend-headers.js'
 
 /**
  * Build GOV.UK pagination items with ellipsis for large page counts.
@@ -48,7 +42,7 @@ function buildPaginationItems(currentPage, totalPages) {
   return items
 }
 
-function buildPageData(requestedPage) {
+function buildPageData(requestedPage, uploadsData) {
   const itemsPerPage = config.get('pagination.itemsPerPage')
   const totalItems = uploadsData.length
   const totalPages = Math.ceil(totalItems / itemsPerPage)
@@ -90,14 +84,35 @@ function buildPageData(requestedPage) {
 }
 
 export const homeController = {
-  handler(request, h) {
-    const { pageUploads, pagination } = buildPageData(request.query.page)
+  async handler(request, h) {
+    let uploadsData = []
+    try {
+      const res = await fetch(
+        `${config.get('backendApiUrl')}/fetchUploadHistory`,
+        { headers: buildBackendHeaders(request) }
+      )
+      if (res.ok) {
+        uploadsData = await res.json()
+      }
+    } catch (err) {
+      request.logger.error({ err }, 'Failed to fetch upload history')
+    }
+
+    // Read and clear any upload error stored by the POST handler
+    const uploadError = request.yar.flash('uploadError')[0] ?? null
+
+    const { pageUploads, pagination } = buildPageData(
+      request.query.page,
+      uploadsData
+    )
     return h.view('home/index', {
-      pageTitle: 'Home',
+      pageTitle: uploadError ? 'Error: Upload Document' : 'Upload Document',
       heading: 'Home',
       uploads: pageUploads,
       pagination,
-      paginationAlignment: config.get('pagination.alignment')
+      paginationAlignment: config.get('pagination.alignment'),
+      maxUploadFileSizeBytes: config.get('upload.maxFileSizeMb') * 1024 * 1024,
+      uploadError
     })
   }
 }
@@ -108,12 +123,72 @@ export const uploadController = {
       multipart: true,
       output: 'stream',
       parse: true,
-      maxBytes: 5 * 1024 * 1024 // 5MB
+      maxBytes: config.get('upload.maxFileSizeMb') * 1024 * 1024
     }
   },
-  handler(request, h) {
-    // TODO: process uploaded file (request.payload.policyDocx)
-    // and redirect to result page or back with error
+  async handler(request, h) {
+    const file = request.payload?.file
+    const templateType = request.payload?.templateType
+    const fileName = file?.hapi?.filename ?? file?.filename ?? 'upload'
+
+    request.logger.info({ fileName, templateType }, 'Upload request received')
+
+    if (!file) {
+      request.logger.error('No file in payload')
+      return h.redirect('/')
+    }
+
+    const backendUrl = `${config.get('backendApiUrl')}/upload`
+    request.logger.info({ backendUrl }, 'Calling backend upload')
+
+    const formData = new FormData()
+    formData.append(
+      'file',
+      new Blob([await streamToBuffer(file)], {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      }),
+      fileName
+    )
+    formData.append('templateType', templateType ?? '')
+    formData.append('fileName', fileName)
+
+    try {
+      const res = await fetch(backendUrl, {
+        method: 'POST',
+        headers: buildBackendHeaders(request),
+        body: formData
+      })
+      request.logger.info({ status: res.status }, 'Backend upload response')
+
+      const responseBody = await res.json().catch(() => null)
+
+      if (!res.ok || (responseBody?.statusCode && responseBody.statusCode >= 400)) {
+        const errorMessage =
+          responseBody?.errorMessage ??
+          responseBody?.detail?.[0]?.msg ??
+          'The document could not be uploaded. Please try again.'
+        request.logger.error(
+          { status: res.status, responseBody },
+          'Upload failed'
+        )
+        request.yar.flash('uploadError', errorMessage)
+      }
+    } catch (err) {
+      request.logger.error({ err }, 'Upload request error')
+      request.yar.flash(
+        'uploadError',
+        'The document could not be uploaded due to a network error. Please try again.'
+      )
+    }
+
     return h.redirect('/')
   }
+}
+
+async function streamToBuffer(stream) {
+  const chunks = []
+  for await (const chunk of stream) {
+    chunks.push(chunk)
+  }
+  return Buffer.concat(chunks)
 }

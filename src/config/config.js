@@ -254,6 +254,12 @@ export const config = convict({
       default: 50,
       env: 'MAX_UPLOAD_FILE_SIZE_MB'
     }
+  },
+  backendApiUrl: {
+    doc: 'Backend service base URL',
+    format: String,
+    default: 'http://localhost:8085/api',
+    env: 'BACKEND_API_URL'
   }
 })
 

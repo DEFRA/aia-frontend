@@ -1,14 +1,27 @@
 {% extends 'layouts/page.njk' %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/pagination/macro.njk" import govukPagination %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
-{% block pageTitle %}Upload Document{% endblock %}
+{% block pageTitle %}{{ pageTitle }}{% endblock %}
 
 {% block content %}
 
+{% if uploadError %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: [
+      {
+        text: uploadError,
+        href: "#file"
+      }
+    ]
+  }) }}
+{% endif %}
+
 <h1 class="govuk-heading-m">Upload the document to generate AI-powered insights</h1>
 
-<form id="uploadForm" method="post" enctype="multipart/form-data" novalidate>
+<form id="uploadForm" method="post" action="/upload" enctype="multipart/form-data" novalidate>
   <div class="govuk-form-group" id="templateTypeGroup">
     <label class="govuk-label" for="templateType">
       Document Template Type
@@ -22,16 +35,16 @@
       <option value="SDA" {% if templateType == 'SDA' %}selected{% endif %}>SDA</option>
     </select>
   </div>
-  <div class="govuk-form-group" id="policyDocxGroup">
-    <label class="govuk-label" for="policyDocx">Select DOCX file</label>
-    <p class="govuk-error-message app-error-message" id="policyDocxError">
+  <div class="govuk-form-group" id="fileGroup">
+    <label class="govuk-label" for="file">Select DOCX file</label>
+    <p class="govuk-error-message app-error-message" id="fileError">
       <span class="govuk-visually-hidden">Error:</span>
-      <span id="policyDocxErrorText"></span>
+      <span id="fileErrorText"></span>
     </p>
     <div class="file-selection-area">
-      <input class="govuk-file-upload" id="policyDocx" name="policyDocx" type="file"
+      <input class="govuk-file-upload" id="file" name="file" type="file"
         accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        aria-describedby="policyDocxError"
+        aria-describedby="fileError"
         data-max-file-size-bytes="{{ maxUploadFileSizeBytes }}">
       <div id="fileSpinner" class="spinner"></div>
     </div>
@@ -58,10 +71,10 @@
     <tbody class="govuk-table__body">
       {% for upload in uploads %}
       <tr class="govuk-table__row">
-        <td class="govuk-table__cell">{{ upload.filename }}</td>
-        <td class="govuk-table__cell">{{ upload.analysisType }}</td>
+        <td class="govuk-table__cell">{{ upload.file_name }}</td>
+        <td class="govuk-table__cell">{{ upload.template_type }}</td>
         <td class="govuk-table__cell"><span class="status-badge status-{{ upload.status | lower }}">{{ upload.status }}</span></td>
-        <td class="govuk-table__cell">{{ upload.timestamp }}</td>
+        <td class="govuk-table__cell">{{ upload.uploaded_ts }}</td>
         <td class="govuk-table__cell">
           {% if upload.status == 'Completed' %}
             <a href="#" class="govuk-link js-open-wip-modal">View Results</a>

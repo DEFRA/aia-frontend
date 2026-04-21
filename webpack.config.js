@@ -179,5 +179,5 @@ export default {
     loggingDebug: ['sass-loader'],
     preset: 'minimal'
   },
-  target: 'browserslist:javascripts'
+  //target: 'browserslist:javascripts'
 }

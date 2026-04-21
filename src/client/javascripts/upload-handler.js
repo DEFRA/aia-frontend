@@ -12,7 +12,6 @@
  */
 
 import { validateDocxFile } from './file-validator.js'
-import { openWipModal } from './wip-modal-handler.js'
 
 // ── Error display helpers ──────────────────────────────────────────────────────
 
@@ -45,10 +44,10 @@ function clearTemplateError() {
 }
 
 function showFileError(message) {
-  const group = document.getElementById('policyDocxGroup')
-  const errMsg = document.getElementById('policyDocxError')
-  const errText = document.getElementById('policyDocxErrorText')
-  const input = document.getElementById('policyDocx')
+  const group = document.getElementById('fileGroup')
+  const errMsg = document.getElementById('fileError')
+  const errText = document.getElementById('fileErrorText')
+  const input = document.getElementById('file')
 
   if (!group || !errMsg || !errText || !input) return
 
@@ -59,10 +58,10 @@ function showFileError(message) {
 }
 
 function clearFileError() {
-  const group = document.getElementById('policyDocxGroup')
-  const errMsg = document.getElementById('policyDocxError')
-  const errText = document.getElementById('policyDocxErrorText')
-  const input = document.getElementById('policyDocx')
+  const group = document.getElementById('fileGroup')
+  const errMsg = document.getElementById('fileError')
+  const errText = document.getElementById('fileErrorText')
+  const input = document.getElementById('file')
 
   if (!group || !errMsg || !errText || !input) return
 
@@ -77,7 +76,7 @@ function clearFileError() {
 export function initUploadHandler() {
   const sel = document.getElementById('templateType')
   const form = document.getElementById('uploadForm')
-  const fileInput = document.getElementById('policyDocx')
+  const fileInput = document.getElementById('file')
 
   const maxFileSizeBytesRaw = fileInput?.dataset?.maxFileSizeBytes
   const maxFileSizeBytes = maxFileSizeBytesRaw
@@ -122,7 +121,7 @@ export function initUploadHandler() {
       }
 
       // Validate file
-      const input = document.getElementById('policyDocx')
+      const input = document.getElementById('file')
       const file = input && input.files[0]
 
       if (!file) {
@@ -145,8 +144,7 @@ export function initUploadHandler() {
 
       if (hasError) return
 
-      // All valid — show WIP modal instead of submitting
-      openWipModal()
+      form.submit()
     })
   }
 }

@@ -24,11 +24,11 @@ function buildDOM({ maxFileSizeBytes = '' } = {}) {
           <option value="SDA">SDA</option>
         </select>
       </div>
-      <div id="policyDocxGroup" class="govuk-form-group">
-        <p id="policyDocxError" class="govuk-error-message" style="display:none">
-          <span id="policyDocxErrorText"></span>
+      <div id="fileGroup" class="govuk-form-group">
+        <p id="fileError" class="govuk-error-message" style="display:none">
+          <span id="fileErrorText"></span>
         </p>
-        <input id="policyDocx" type="file" class="govuk-file-upload"
+        <input id="file" type="file" class="govuk-file-upload"
           ${maxFileSizeBytes ? `data-max-file-size-bytes="${maxFileSizeBytes}"` : ''} />
       </div>
       <button type="submit">Upload</button>
@@ -40,13 +40,13 @@ function getEls() {
   return {
     form: document.getElementById('uploadForm'),
     sel: document.getElementById('templateType'),
-    fileInput: document.getElementById('policyDocx'),
+    fileInput: document.getElementById('file'),
     templateTypeGroup: document.getElementById('templateTypeGroup'),
     templateTypeError: document.getElementById('templateTypeError'),
     templateTypeErrorText: document.getElementById('templateTypeErrorText'),
-    policyDocxGroup: document.getElementById('policyDocxGroup'),
-    policyDocxError: document.getElementById('policyDocxError'),
-    policyDocxErrorText: document.getElementById('policyDocxErrorText')
+    fileGroup: document.getElementById('fileGroup'),
+    fileError: document.getElementById('fileError'),
+    fileErrorText: document.getElementById('fileErrorText')
   }
 }
 
@@ -134,20 +134,20 @@ describe('initUploadHandler', () => {
 
   describe('file input change', () => {
     test('does nothing when no file is selected', async () => {
-      const { fileInput, policyDocxError } = getEls()
+      const { fileInput, fileError } = getEls()
       // No file attached — files is empty
       fileInput.dispatchEvent(new Event('change'))
       // Allow microtasks to settle
       await new Promise((resolve) => setTimeout(resolve, 50))
-      expect(policyDocxError.style.display).not.toBe('block')
+      expect(fileError.style.display).not.toBe('block')
     })
 
     test('shows file error and clears value for invalid file', async () => {
       const {
         fileInput,
-        policyDocxError,
-        policyDocxErrorText,
-        policyDocxGroup
+        fileError,
+        fileErrorText,
+        fileGroup
       } = getEls()
       const badFile = makeFile([0x00, 0x01, 0x02, 0x03]) // not ZIP
       attachFile(fileInput, badFile)
@@ -155,13 +155,13 @@ describe('initUploadHandler', () => {
       fileInput.dispatchEvent(new Event('change'))
       await new Promise((resolve) => setTimeout(resolve, 100))
 
-      expect(policyDocxError.style.display).toBe('block')
-      expect(policyDocxErrorText.textContent).toContain('valid DOCX')
-      expect(policyDocxGroup).toBeDefined()
+      expect(fileError.style.display).toBe('block')
+      expect(fileErrorText.textContent).toContain('valid DOCX')
+      expect(fileGroup).toBeDefined()
     })
 
     test('adds error classes to group and input on invalid file', async () => {
-      const { fileInput, policyDocxGroup } = getEls()
+      const { fileInput, fileGroup } = getEls()
       const badFile = makeFile([0x00, 0x01, 0x02, 0x03])
       attachFile(fileInput, badFile)
 
@@ -169,7 +169,7 @@ describe('initUploadHandler', () => {
       await new Promise((resolve) => setTimeout(resolve, 100))
 
       expect(
-        policyDocxGroup.classList.contains('govuk-form-group--error')
+        fileGroup.classList.contains('govuk-form-group--error')
       ).toBe(true)
       expect(fileInput.classList.contains('govuk-file-upload--error')).toBe(
         true
@@ -177,14 +177,14 @@ describe('initUploadHandler', () => {
     })
 
     test('shows no error for a valid docx file', async () => {
-      const { fileInput, policyDocxError } = getEls()
+      const { fileInput, fileError } = getEls()
       const goodFile = makeFile(validDocxBytes())
       attachFile(fileInput, goodFile)
 
       fileInput.dispatchEvent(new Event('change'))
       await new Promise((resolve) => setTimeout(resolve, 100))
 
-      expect(policyDocxError.style.display).not.toBe('block')
+      expect(fileError.style.display).not.toBe('block')
     })
 
     test('reads data-max-file-size-bytes attribute and rejects oversized file', async () => {
@@ -193,15 +193,15 @@ describe('initUploadHandler', () => {
       buildDOM({ maxFileSizeBytes: 1 })
       initUploadHandler()
 
-      const { fileInput, policyDocxError, policyDocxErrorText } = getEls()
+      const { fileInput, fileError, fileErrorText } = getEls()
       const file = makeFile(validDocxBytes()) // bigger than 1 byte
       attachFile(fileInput, file)
 
       fileInput.dispatchEvent(new Event('change'))
       await new Promise((resolve) => setTimeout(resolve, 100))
 
-      expect(policyDocxError.style.display).toBe('block')
-      expect(policyDocxErrorText.textContent).toMatch(/smaller than/)
+      expect(fileError.style.display).toBe('block')
+      expect(fileErrorText.textContent).toMatch(/smaller than/)
     })
   })
 
@@ -209,28 +209,28 @@ describe('initUploadHandler', () => {
 
   describe('form submit', () => {
     test('prevents submit and shows both errors when nothing is selected', async () => {
-      const { form, templateTypeError, policyDocxError } = getEls()
+      const { form, templateTypeError, fileError } = getEls()
 
       form.dispatchEvent(new Event('submit', { bubbles: true }))
       await new Promise((resolve) => setTimeout(resolve, 100))
 
       expect(templateTypeError.style.display).toBe('block')
-      expect(policyDocxError.style.display).toBe('block')
+      expect(fileError.style.display).toBe('block')
     })
 
     test('shows only template error when template is empty but file is valid', async () => {
-      const { form, fileInput, templateTypeError, policyDocxError } = getEls()
+      const { form, fileInput, templateTypeError, fileError } = getEls()
       attachFile(fileInput, makeFile(validDocxBytes()))
 
       form.dispatchEvent(new Event('submit', { bubbles: true }))
       await new Promise((resolve) => setTimeout(resolve, 100))
 
       expect(templateTypeError.style.display).toBe('block')
-      expect(policyDocxError.style.display).not.toBe('block')
+      expect(fileError.style.display).not.toBe('block')
     })
 
     test('shows only file error when template is selected but file is invalid', async () => {
-      const { form, sel, fileInput, templateTypeError, policyDocxError } =
+      const { form, sel, fileInput, templateTypeError, fileError } =
         getEls()
       sel.value = 'SDA'
       attachFile(fileInput, makeFile([0x00, 0x01, 0x02, 0x03]))
@@ -239,18 +239,18 @@ describe('initUploadHandler', () => {
       await new Promise((resolve) => setTimeout(resolve, 100))
 
       expect(templateTypeError.style.display).not.toBe('block')
-      expect(policyDocxError.style.display).toBe('block')
+      expect(fileError.style.display).toBe('block')
     })
 
     test('shows file error when template selected but no file chosen', async () => {
-      const { form, sel, policyDocxError, policyDocxErrorText } = getEls()
+      const { form, sel, fileError, fileErrorText } = getEls()
       sel.value = 'SDA'
 
       form.dispatchEvent(new Event('submit', { bubbles: true }))
       await new Promise((resolve) => setTimeout(resolve, 100))
 
-      expect(policyDocxError.style.display).toBe('block')
-      expect(policyDocxErrorText.textContent).toContain('Please select a file')
+      expect(fileError.style.display).toBe('block')
+      expect(fileErrorText.textContent).toContain('Please select a file')
     })
 
     test('opens the WIP modal when template and valid file are provided', async () => {
@@ -265,11 +265,11 @@ describe('initUploadHandler', () => {
     })
 
     test('clears file error when file is valid on submit', async () => {
-      const { form, sel, fileInput, policyDocxError, policyDocxGroup } =
+      const { form, sel, fileInput, fileError, fileGroup } =
         getEls()
       // Pre-populate an error state
-      policyDocxError.style.display = 'block'
-      policyDocxGroup.classList.add('govuk-form-group--error')
+      fileError.style.display = 'block'
+      fileGroup.classList.add('govuk-form-group--error')
       fileInput.classList.add('govuk-file-upload--error')
 
       sel.value = 'SDA'
@@ -280,9 +280,9 @@ describe('initUploadHandler', () => {
       form.dispatchEvent(new Event('submit', { bubbles: true }))
       await new Promise((resolve) => setTimeout(resolve, 100))
 
-      expect(policyDocxError.style.display).toBe('none')
+      expect(fileError.style.display).toBe('none')
       expect(
-        policyDocxGroup.classList.contains('govuk-form-group--error')
+        fileGroup.classList.contains('govuk-form-group--error')
       ).toBe(false)
     })
   })
@@ -311,11 +311,11 @@ describe('upload-handler guard clauses via submit', () => {
     document.body.innerHTML = `
       <form id="uploadForm">
         <select id="templateType"><option value="">-- select --</option></select>
-        <div id="policyDocxGroup" class="govuk-form-group">
-          <p id="policyDocxError" class="govuk-error-message" style="display:none">
-            <span id="policyDocxErrorText"></span>
+        <div id="fileGroup" class="govuk-form-group">
+          <p id="fileError" class="govuk-error-message" style="display:none">
+            <span id="fileErrorText"></span>
           </p>
-          <input id="policyDocx" type="file" />
+          <input id="file" type="file" />
         </div>
         <button type="submit">Upload</button>
       </form>
@@ -336,11 +336,11 @@ describe('upload-handler guard clauses via submit', () => {
         <div id="templateTypeGroup" class="govuk-form-group">
           <select id="templateType"><option value="SDA">SDA</option></select>
         </div>
-        <div id="policyDocxGroup" class="govuk-form-group">
-          <p id="policyDocxError" class="govuk-error-message" style="display:none">
-            <span id="policyDocxErrorText"></span>
+        <div id="fileGroup" class="govuk-form-group">
+          <p id="fileError" class="govuk-error-message" style="display:none">
+            <span id="fileErrorText"></span>
           </p>
-          <input id="policyDocx" type="file" />
+          <input id="file" type="file" />
         </div>
         <button type="submit">Upload</button>
       </form>
@@ -355,7 +355,7 @@ describe('upload-handler guard clauses via submit', () => {
     }).not.toThrow()
   })
 
-  test('showFileError guard: does not throw when policyDocxGroup is absent', async () => {
+  test('showFileError guard: does not throw when fileGroup is absent', async () => {
     document.body.innerHTML = `
       <form id="uploadForm">
         <div id="templateTypeGroup" class="govuk-form-group">
@@ -378,7 +378,7 @@ describe('upload-handler guard clauses via submit', () => {
     ).not.toThrow()
   })
 
-  test('clearFileError guard: does not throw when policyDocxError is absent', async () => {
+  test('clearFileError guard: does not throw when fileError is absent', async () => {
     document.body.innerHTML = `
       <form id="uploadForm">
         <div id="templateTypeGroup" class="govuk-form-group">
@@ -387,8 +387,8 @@ describe('upload-handler guard clauses via submit', () => {
           </p>
           <select id="templateType"><option value="SDA">SDA</option></select>
         </div>
-        <div id="policyDocxGroup" class="govuk-form-group">
-          <input id="policyDocx" type="file" />
+        <div id="fileGroup" class="govuk-form-group">
+          <input id="file" type="file" />
         </div>
         <button type="submit">Upload</button>
       </form>
@@ -399,7 +399,7 @@ describe('upload-handler guard clauses via submit', () => {
     sel.value = 'SDA'
     const form = document.getElementById('uploadForm')
     // clearFileError is called on a successful valid file — with missing
-    // policyDocxError element the guard should return safely
+    // fileError element the guard should return safely
     expect(() =>
       form.dispatchEvent(new Event('submit', { bubbles: true }))
     ).not.toThrow()
