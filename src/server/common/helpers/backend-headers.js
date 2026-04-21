@@ -4,7 +4,9 @@ const DEFAULT_USER_ID = 'TestUser123'
 const JWT_SECRET = 'aia-documents-secret-key-for-jwt-32-chars'
 
 function generateJWT(payload) {
-  const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url')
+  const header = Buffer.from(
+    JSON.stringify({ alg: 'HS256', typ: 'JWT' })
+  ).toString('base64url')
   const body = Buffer.from(
     JSON.stringify({
       ...payload,
@@ -22,7 +24,9 @@ function generateJWT(payload) {
 
 export function buildBackendHeaders(request) {
   const userId = request.yar.get('userId') || DEFAULT_USER_ID
-  const token = request.yar.get('token') || generateJWT({ sub: userId, name: 'Test User', admin: true })
+  const token =
+    request.yar.get('token') ||
+    generateJWT({ sub: userId, name: 'Test User', admin: true })
 
   return {
     Authorization: `Bearer ${token}`,

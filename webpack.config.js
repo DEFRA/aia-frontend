@@ -178,6 +178,6 @@ export default {
     errorDetails: true,
     loggingDebug: ['sass-loader'],
     preset: 'minimal'
-  },
+  }
   //target: 'browserslist:javascripts'
 }

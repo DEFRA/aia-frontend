@@ -162,7 +162,10 @@ export const uploadController = {
 
       const responseBody = await res.json().catch(() => null)
 
-      if (!res.ok || (responseBody?.statusCode && responseBody.statusCode >= 400)) {
+      if (
+        !res.ok ||
+        (responseBody?.statusCode && responseBody.statusCode >= 400)
+      ) {
         const errorMessage =
           responseBody?.errorMessage ??
           responseBody?.detail?.[0]?.msg ??

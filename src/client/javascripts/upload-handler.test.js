@@ -143,12 +143,7 @@ describe('initUploadHandler', () => {
     })
 
     test('shows file error and clears value for invalid file', async () => {
-      const {
-        fileInput,
-        fileError,
-        fileErrorText,
-        fileGroup
-      } = getEls()
+      const { fileInput, fileError, fileErrorText, fileGroup } = getEls()
       const badFile = makeFile([0x00, 0x01, 0x02, 0x03]) // not ZIP
       attachFile(fileInput, badFile)
 
@@ -168,9 +163,7 @@ describe('initUploadHandler', () => {
       fileInput.dispatchEvent(new Event('change'))
       await new Promise((resolve) => setTimeout(resolve, 100))
 
-      expect(
-        fileGroup.classList.contains('govuk-form-group--error')
-      ).toBe(true)
+      expect(fileGroup.classList.contains('govuk-form-group--error')).toBe(true)
       expect(fileInput.classList.contains('govuk-file-upload--error')).toBe(
         true
       )
@@ -230,8 +223,7 @@ describe('initUploadHandler', () => {
     })
 
     test('shows only file error when template is selected but file is invalid', async () => {
-      const { form, sel, fileInput, templateTypeError, fileError } =
-        getEls()
+      const { form, sel, fileInput, templateTypeError, fileError } = getEls()
       sel.value = 'SDA'
       attachFile(fileInput, makeFile([0x00, 0x01, 0x02, 0x03]))
 
@@ -265,8 +257,7 @@ describe('initUploadHandler', () => {
     })
 
     test('clears file error when file is valid on submit', async () => {
-      const { form, sel, fileInput, fileError, fileGroup } =
-        getEls()
+      const { form, sel, fileInput, fileError, fileGroup } = getEls()
       // Pre-populate an error state
       fileError.style.display = 'block'
       fileGroup.classList.add('govuk-form-group--error')
@@ -281,9 +272,9 @@ describe('initUploadHandler', () => {
       await new Promise((resolve) => setTimeout(resolve, 100))
 
       expect(fileError.style.display).toBe('none')
-      expect(
-        fileGroup.classList.contains('govuk-form-group--error')
-      ).toBe(false)
+      expect(fileGroup.classList.contains('govuk-form-group--error')).toBe(
+        false
+      )
     })
   })
 
