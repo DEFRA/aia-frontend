@@ -1,0 +1,46 @@
+{% extends 'layouts/page.njk' %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% block pageTitle %}{{ pageTitle }}{% endblock %}
+
+{% block content %}
+
+{% if errorMessage %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: [
+      {
+        text: errorMessage,
+        href: "#accessCode"
+      }
+    ]
+  }) }}
+{% endif %}
+
+<h1 class="govuk-heading-l">Enter your access code</h1>
+
+<p class="govuk-body">You need a valid access code to use this service.</p>
+
+<form method="post" action="/" novalidate>
+  {{ govukInput({
+    label: {
+      text: "Access code",
+      classes: "govuk-label--m"
+    },
+    id: "accessCode",
+    name: "accessCode",
+    type: "password",
+    classes: "govuk-input--width-20",
+    autocomplete: "off",
+    spellcheck: false,
+    errorMessage: { text: errorMessage } if errorMessage
+  }) }}
+
+  {{ govukButton({
+    text: "Submit"
+  }) }}
+</form>
+
+{% endblock %}

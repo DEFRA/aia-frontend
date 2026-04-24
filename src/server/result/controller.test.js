@@ -1,13 +1,16 @@
 import { vi } from 'vitest'
 import { createServer } from '../server.js'
 import { statusCodes } from '../common/constants/status-codes.js'
+import { getAuthCookie } from '../common/test-helpers/auth-helper.js'
 
 describe('#resultController', () => {
   let server
+  let authCookie
 
   beforeAll(async () => {
     server = await createServer()
     await server.initialize()
+    authCookie = await getAuthCookie(server)
   })
 
   afterAll(async () => {
@@ -18,7 +21,8 @@ describe('#resultController', () => {
     test('Should return 200 and render the result page', async () => {
       const { result, statusCode } = await server.inject({
         method: 'GET',
-        url: '/result'
+        url: '/result',
+        headers: { cookie: authCookie }
       })
 
       expect(result).toContain('AI Assure Architecture Governance')
@@ -28,7 +32,8 @@ describe('#resultController', () => {
     test('Should render markdown content from default result.json', async () => {
       const { result, statusCode } = await server.inject({
         method: 'GET',
-        url: '/result'
+        url: '/result',
+        headers: { cookie: authCookie }
       })
 
       expect(statusCode).toBe(statusCodes.ok)
@@ -39,7 +44,8 @@ describe('#resultController', () => {
     test('Should render result2.json when docID matches RESULT2_DOC_ID', async () => {
       const { result, statusCode } = await server.inject({
         method: 'GET',
-        url: '/result?docID=UUID-1234-5678-9012-abcdef123456'
+        url: '/result?docID=UUID-1234-5678-9012-abcdef123456',
+        headers: { cookie: authCookie }
       })
 
       expect(statusCode).toBe(statusCodes.ok)
@@ -49,7 +55,8 @@ describe('#resultController', () => {
     test('Should render result.json for an unrecognised docID', async () => {
       const { result, statusCode } = await server.inject({
         method: 'GET',
-        url: '/result?docID=unknown-id'
+        url: '/result?docID=unknown-id',
+        headers: { cookie: authCookie }
       })
 
       expect(statusCode).toBe(statusCodes.ok)

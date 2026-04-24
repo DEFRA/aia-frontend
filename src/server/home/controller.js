@@ -144,7 +144,7 @@ export const uploadController = {
     if (!file) {
       request.logger.error('No file in payload')
       request.yar.flash('uploadError', 'Please select a file')
-      return h.redirect('/')
+      return h.redirect('/home')
     }
 
     const backendUrl = `${config.get('backendApiUrl')}/upload`

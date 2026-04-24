@@ -5,6 +5,7 @@ import { result } from './result/index.js'
 import { health } from './health/index.js'
 import { signout } from './signout/index.js'
 import { notAuthorized } from './not-authorized/index.js'
+import { accessCode } from './access-code/index.js'
 import { serveStaticFiles } from './common/helpers/serve-static-files.js'
 
 export const router = {
@@ -17,7 +18,7 @@ export const router = {
       await server.register([health])
 
       // Application specific routes, add your own routes here
-      await server.register([home, result, signout, notAuthorized])
+      await server.register([home, result, signout, notAuthorized, accessCode])
 
       // Static assets
       await server.register([serveStaticFiles])

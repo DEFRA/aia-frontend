@@ -41,6 +41,18 @@ export const config = convict({
     default: oneWeekMs,
     env: 'STATIC_CACHE_TIMEOUT'
   },
+  accessCode: {
+    doc: 'Access code (UUID) required to use the service',
+    format: String,
+    default: '92a238b4-db01-4aa0-aa0c-85f42aff0887',
+    env: 'ACCESS_CODE'
+  },
+  accessCodeHash: {
+    doc: 'SHA-256 hash of the access code for additional validation',
+    format: String,
+    default: '9b4fb2d029c5eeb30a2aee9fbc713c5b6bd606bb264b328ca003741e29f5a554',
+    env: 'ACCESS_CODE_HASH'
+  },
   serviceName: {
     doc: 'Applications Service Name',
     format: String,
