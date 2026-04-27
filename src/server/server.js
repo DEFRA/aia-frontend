@@ -16,6 +16,12 @@ import { contentSecurityPolicy } from './common/helpers/content-security-policy.
 
 export async function createServer() {
   setupProxy()
+
+  const publicPaths = ['/', '/health', '/public', '/favicon.ico']
+  const isPublicPath = (path) =>
+    publicPaths.some(
+      (p) => path === p || (p !== '/' && path.startsWith(p + '/'))
+    )
   const server = hapi.server({
     host: config.get('host'),
     port: config.get('port'),
@@ -62,6 +68,32 @@ export async function createServer() {
     contentSecurityPolicy,
     router // Register all the controllers/routes defined in src/server/router.js
   ])
+
+  // Guard: redirect to access-code page if not authenticated or inactive
+  const inactivityTimeoutMs = config.get('inactivityTimeoutMs')
+
+  server.ext('onPreAuth', (request, h) => {
+    const path = request.path
+    if (isPublicPath(path)) {
+      return h.continue
+    }
+
+    const accessGranted = request.yar?.get('accessGranted')
+    if (!accessGranted) {
+      return h.redirect('/').takeover()
+    }
+
+    // Check inactivity timeout
+    const lastActivity = request.yar.get('lastActivity')
+    const now = Date.now()
+    if (lastActivity && now - lastActivity > inactivityTimeoutMs) {
+      request.yar.reset()
+      return h.redirect('/').takeover()
+    }
+    request.yar.set('lastActivity', now)
+
+    return h.continue
+  })
 
   server.ext('onPreResponse', catchAll)
 

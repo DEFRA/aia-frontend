@@ -1,12 +1,15 @@
 import { createServer } from '../server.js'
 import { statusCodes } from '../common/constants/status-codes.js'
+import { getAuthCookie } from '../common/test-helpers/auth-helper.js'
 
 describe('#notAuthorizedController', () => {
   let server
+  let authCookie
 
   beforeAll(async () => {
     server = await createServer()
     await server.initialize()
+    authCookie = await getAuthCookie(server)
   })
 
   afterAll(async () => {
@@ -16,7 +19,8 @@ describe('#notAuthorizedController', () => {
   test('Should return 200 and render the not-authorized page', async () => {
     const { result, statusCode } = await server.inject({
       method: 'GET',
-      url: '/not-authorized'
+      url: '/not-authorized',
+      headers: { cookie: authCookie }
     })
 
     expect(statusCode).toBe(statusCodes.ok)
