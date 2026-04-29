@@ -102,7 +102,7 @@ describe('#resultController', () => {
 
     test('Should fall back to mock data when BACKEND_API_URL is not configured', async () => {
       configGetMock.mockImplementation((key) => {
-        if (key === 'result.mockData') return false
+        if (key === 'result.mockData') return true
         if (key === 'backendApiUrl') return null
         return null
       })
@@ -119,7 +119,7 @@ describe('#resultController', () => {
 
     test('Should fall back to mock data when fetch throws a network error', async () => {
       configGetMock.mockImplementation((key) => {
-        if (key === 'result.mockData') return false
+        if (key === 'result.mockData') return true
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
         return null
@@ -142,7 +142,7 @@ describe('#resultController', () => {
 
     test('Should fall back to mock data when API responds with non-ok status', async () => {
       configGetMock.mockImplementation((key) => {
-        if (key === 'result.mockData') return false
+        if (key === 'result.mockData') return true
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
         return null
@@ -231,7 +231,7 @@ describe('#resultController', () => {
 
     test('Should fall back to mock data when documentId is missing', async () => {
       configGetMock.mockImplementation((key) => {
-        if (key === 'result.mockData') return false
+        if (key === 'result.mockData') return true
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
         return null

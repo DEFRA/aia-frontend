@@ -93,7 +93,7 @@ export const config = convict({
     mockData: {
       doc: 'Use local mock result files instead of invoking the backend documents API',
       format: Boolean,
-      default: true,
+      default: false,
       env: 'MOCK_DATA_RESULT'
     },
     apiTimeoutMs: {

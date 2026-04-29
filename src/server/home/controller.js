@@ -108,15 +108,18 @@ export const homeController = {
       )
       if (res.ok) {
         const body = await res.json()
-        // Backend returns { documents, total, page, limit }
         uploadsData = body.documents ?? []
         totalItems = body.total ?? uploadsData.length
       } else {
-        useFallback = true
+        request.logger.error(
+          { status: res.status },
+          'Upload history API returned non-OK response'
+        )
+        if (config.get('result.mockData')) useFallback = true
       }
     } catch (err) {
       request.logger.error({ err }, 'Failed to fetch upload history')
-      useFallback = true
+      if (config.get('result.mockData')) useFallback = true
     }
 
     // Read and clear any upload error stored by the POST handler

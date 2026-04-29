@@ -114,34 +114,26 @@ export const resultController = {
     let errorMessage = null
 
     try {
-      try {
-        const apiResult = await getApiResult(documentId, request)
-        status = apiResult.status
-        errorMessage = apiResult.errorMessage
+      const apiResult = await getApiResult(documentId, request)
+      status = apiResult.status
+      errorMessage = apiResult.errorMessage
 
-        if (status === 'ERROR') {
-          markdownContent =
-            errorMessage ?? 'An error occurred during processing.'
-        } else {
-          markdownContent = apiResult.markdownContent
-        }
-      } catch (apiErr) {
-        request.logger.error(
-          { err: apiErr, documentId },
-          'Backend API unavailable for result content, falling back to mock data'
-        )
-        markdownContent = getMockResultContent(documentId)
+      if (status === 'ERROR') {
+        markdownContent = errorMessage ?? 'An error occurred during processing.'
+      } else {
+        markdownContent = apiResult.markdownContent
       }
 
       if (!markdownContent) {
         markdownContent = 'No result content available.'
       }
     } catch (err) {
-      request.logger.error(
-        { err, documentId },
-        'Failed to load result content from configured data source'
-      )
+      request.logger.error({ err, documentId }, 'Failed to load result content')
       markdownContent = 'Error loading result content.'
+
+      if (config.get('result.mockData')) {
+        markdownContent = getMockResultContent(documentId)
+      }
     }
 
     return h.view('result/index', {

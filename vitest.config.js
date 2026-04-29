@@ -5,6 +5,9 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     clearMocks: true,
+    env: {
+      MOCK_DATA_RESULT: 'false'
+    },
     coverage: {
       provider: 'v8',
       reportsDirectory: './coverage',
