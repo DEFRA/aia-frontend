@@ -38,19 +38,19 @@ npm start
 
 ## Available scripts
 
-| Script | Description |
-|---|---|
-| `npm run dev` | Start dev server with hot reload |
-| `npm start` | Production build + start |
-| `npm test` | Run all tests with v8 coverage |
-| `npm run test:watch` | Interactive test watch mode |
-| `npm run lint` | Run ESLint + Stylelint |
-| `npm run lint:js:fix` | Auto-fix ESLint issues |
-| `npm run format` | Format with Prettier |
-| `npm run format:check` | Check Prettier formatting |
-| `npm run pr-prep` | Full pre-PR check: lint → format:check → test |
-| `npm run build:frontend` | Production webpack build only |
-| `npm run security-audit` | `npm audit --audit-level=high` |
+| Script                   | Description                                   |
+| ------------------------ | --------------------------------------------- |
+| `npm run dev`            | Start dev server with hot reload              |
+| `npm start`              | Production build + start                      |
+| `npm test`               | Run all tests with v8 coverage                |
+| `npm run test:watch`     | Interactive test watch mode                   |
+| `npm run lint`           | Run ESLint + Stylelint                        |
+| `npm run lint:js:fix`    | Auto-fix ESLint issues                        |
+| `npm run format`         | Format with Prettier                          |
+| `npm run format:check`   | Check Prettier formatting                     |
+| `npm run pr-prep`        | Full pre-PR check: lint → format:check → test |
+| `npm run build:frontend` | Production webpack build only                 |
+| `npm run security-audit` | `npm audit --audit-level=high`                |
 
 ---
 
@@ -60,49 +60,49 @@ All variables are validated at startup by Convict (`src/config/config.js`). Defa
 
 ### Core
 
-| Variable | Default | Description |
-|---|---|---|
-| `NODE_ENV` | `development` | `production` / `development` / `test` |
-| `PORT` | `3000` | Server port |
-| `SESSION_COOKIE_PASSWORD` | dev value | Must be 32+ chars in production |
-| `SESSION_CACHE_ENGINE` | `memory` (dev) / `redis` (prod) | Session backend |
-| `REDIS_HOST` | `127.0.0.1` | Required when using Redis |
+| Variable                  | Default                         | Description                           |
+| ------------------------- | ------------------------------- | ------------------------------------- |
+| `NODE_ENV`                | `development`                   | `production` / `development` / `test` |
+| `PORT`                    | `3000`                          | Server port                           |
+| `SESSION_COOKIE_PASSWORD` | dev value                       | Must be 32+ chars in production       |
+| `SESSION_CACHE_ENGINE`    | `memory` (dev) / `redis` (prod) | Session backend                       |
+| `REDIS_HOST`              | `127.0.0.1`                     | Required when using Redis             |
 
 ### Backend integration
 
-| Variable | Default | Description |
-|---|---|---|
-| `BACKEND_API_URL` | `http://localhost:8086/api/v1` | Backend service base URL |
-| `MOCK_DATA_RESULT` | `false` | When `true`, falls back to local mock JSON **only if** the backend call fails |
-| `RESULT_API_TIMEOUT_MS` | `15000` | Timeout for result/document API requests (ms) |
+| Variable                | Default                        | Description                                                                   |
+| ----------------------- | ------------------------------ | ----------------------------------------------------------------------------- |
+| `BACKEND_API_URL`       | `http://localhost:8086/api/v1` | Backend service base URL                                                      |
+| `MOCK_DATA_RESULT`      | `false`                        | When `true`, falls back to local mock JSON **only if** the backend call fails |
+| `RESULT_API_TIMEOUT_MS` | `15000`                        | Timeout for result/document API requests (ms)                                 |
 
 ### Polling
 
-| Variable | Default | Description |
-|---|---|---|
-| `POLL_INTERVAL_MS` | `30000` | Interval between processing-status polls (ms) |
-| `POLL_MAX_POLLS` | `20` | Maximum polls before showing timeout message (~10 min) |
+| Variable           | Default | Description                                            |
+| ------------------ | ------- | ------------------------------------------------------ |
+| `POLL_INTERVAL_MS` | `30000` | Interval between processing-status polls (ms)          |
+| `POLL_MAX_POLLS`   | `20`    | Maximum polls before showing timeout message (~10 min) |
 
 ### Pagination
 
-| Variable | Default | Description |
-|---|---|---|
-| `ITEMS_PER_PAGE` | `10` | Records per page in upload history |
-| `PAGINATION_ALIGNMENT` | `left` | Pagination alignment (`left` / `right`) |
+| Variable               | Default | Description                             |
+| ---------------------- | ------- | --------------------------------------- |
+| `ITEMS_PER_PAGE`       | `10`    | Records per page in upload history      |
+| `PAGINATION_ALIGNMENT` | `left`  | Pagination alignment (`left` / `right`) |
 
 ### Upload
 
-| Variable | Default | Description |
-|---|---|---|
-| `MAX_UPLOAD_FILE_SIZE_MB` | `50` | Maximum upload file size in MB |
+| Variable                  | Default | Description                    |
+| ------------------------- | ------- | ------------------------------ |
+| `MAX_UPLOAD_FILE_SIZE_MB` | `50`    | Maximum upload file size in MB |
 
 ### Development diagnostics
 
-| Variable | Default | Description |
-|---|---|---|
-| `DEV_SERVICE_LOG` | `false` | Log all backend service calls — URL, request body, response status and body |
-| `LOG_LEVEL` | `info` | Pino log level (`fatal` / `error` / `warn` / `info` / `debug` / `trace` / `silent`) |
-| `LOG_FORMAT` | `pino-pretty` (dev) / `ecs` (prod) | Log output format |
+| Variable          | Default                            | Description                                                                         |
+| ----------------- | ---------------------------------- | ----------------------------------------------------------------------------------- |
+| `DEV_SERVICE_LOG` | `false`                            | Log all backend service calls — URL, request body, response status and body         |
+| `LOG_LEVEL`       | `info`                             | Pino log level (`fatal` / `error` / `warn` / `info` / `debug` / `trace` / `silent`) |
+| `LOG_FORMAT`      | `pino-pretty` (dev) / `ecs` (prod) | Log output format                                                                   |
 
 ---
 
@@ -121,15 +121,15 @@ The frontend proxies all data through the Hapi server — the browser never call
 
 ### Document statuses
 
-| API value | Display label |
-|---|---|
-| `UPLOADING` | Uploading |
-| `UPLOADED` | Uploaded |
-| `PENDING` | Queued |
-| `PROCESSING` | Analysing |
-| `COMPLETE` | Completed |
+| API value          | Display label         |
+| ------------------ | --------------------- |
+| `UPLOADING`        | Uploading             |
+| `UPLOADED`         | Uploaded              |
+| `PENDING`          | Queued                |
+| `PROCESSING`       | Analysing             |
+| `COMPLETE`         | Completed             |
 | `PARTIAL_COMPLETE` | Completed - Partially |
-| `ERROR` | Error |
+| `ERROR`            | Error                 |
 
 ### Mock data fallback
 
@@ -215,17 +215,17 @@ Redis is only required when `SESSION_CACHE_ENGINE=redis`. Development defaults t
 
 ## Key files
 
-| File | Purpose |
-|---|---|
-| `src/index.js` | Application entry point |
-| `src/server/server.js` | Hapi server setup, plugin registration |
-| `src/server/router.js` | Route module registration |
-| `src/config/config.js` | Convict config — all env vars, validated at startup |
-| `src/server/home/controller.js` | Upload history, pagination, upload proxy, poll proxy |
-| `src/server/result/controller.js` | Result page — fetches from API, renders markdown |
-| `src/server/common/helpers/backend-headers.js` | Builds `Authorization` and `X-User-Id` headers |
-| `src/server/common/helpers/service-logger.js` | `tracedFetch` — optional service call logger |
-| `src/client/javascripts/status-poller.js` | Client-side singleton polling module |
-| `src/client/javascripts/application.js` | GOV.UK component init + polling bootstrap |
-| `webpack.config.js` | Bundles client JS/SCSS, copies GOV.UK assets |
-| `compose.yml` | Docker Compose (app + Redis) |
+| File                                           | Purpose                                              |
+| ---------------------------------------------- | ---------------------------------------------------- |
+| `src/index.js`                                 | Application entry point                              |
+| `src/server/server.js`                         | Hapi server setup, plugin registration               |
+| `src/server/router.js`                         | Route module registration                            |
+| `src/config/config.js`                         | Convict config — all env vars, validated at startup  |
+| `src/server/home/controller.js`                | Upload history, pagination, upload proxy, poll proxy |
+| `src/server/result/controller.js`              | Result page — fetches from API, renders markdown     |
+| `src/server/common/helpers/backend-headers.js` | Builds `Authorization` and `X-User-Id` headers       |
+| `src/server/common/helpers/service-logger.js`  | `tracedFetch` — optional service call logger         |
+| `src/client/javascripts/status-poller.js`      | Client-side singleton polling module                 |
+| `src/client/javascripts/application.js`        | GOV.UK component init + polling bootstrap            |
+| `webpack.config.js`                            | Bundles client JS/SCSS, copies GOV.UK assets         |
+| `compose.yml`                                  | Docker Compose (app + Redis)                         |
