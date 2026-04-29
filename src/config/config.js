@@ -41,6 +41,24 @@ export const config = convict({
     default: oneWeekMs,
     env: 'STATIC_CACHE_TIMEOUT'
   },
+  accessCode: {
+    doc: 'Access code (UUID) required to use the service',
+    format: String,
+    default: '92a238b4-db01-4aa0-aa0c-85f42aff0887',
+    env: 'ACCESS_CODE'
+  },
+  accessCodeHash: {
+    doc: 'SHA-256 hash of the access code for additional validation',
+    format: String,
+    default: '9b4fb2d029c5eeb30a2aee9fbc713c5b6bd606bb264b328ca003741e29f5a554',
+    env: 'ACCESS_CODE_HASH'
+  },
+  inactivityTimeoutMs: {
+    doc: 'Inactivity timeout in milliseconds. User is logged out after this period of inactivity.',
+    format: Number,
+    default: 3600000,
+    env: 'INACTIVITY_TIMEOUT_MS'
+  },
   serviceName: {
     doc: 'Applications Service Name',
     format: String,
@@ -73,20 +91,13 @@ export const config = convict({
   },
   result: {
     mockData: {
-      doc: 'Use local mock result files instead of invoking the result API',
+      doc: 'Use local mock result files instead of invoking the backend documents API',
       format: Boolean,
       default: true,
       env: 'MOCK_DATA_RESULT'
     },
-    apiUrl: {
-      doc: 'Result API endpoint used when mockData is disabled',
-      format: String,
-      nullable: true,
-      default: null,
-      env: 'RESULT_API_URL'
-    },
     apiTimeoutMs: {
-      doc: 'Timeout for result API requests in milliseconds',
+      doc: 'Timeout for result/document API requests in milliseconds',
       format: Number,
       default: 15000,
       env: 'RESULT_API_TIMEOUT_MS'
@@ -258,7 +269,7 @@ export const config = convict({
   backendApiUrl: {
     doc: 'Backend service base URL',
     format: String,
-    default: 'http://localhost:8085/api',
+    default: 'http://localhost:8086/api/v1',
     env: 'BACKEND_API_URL'
   }
 })

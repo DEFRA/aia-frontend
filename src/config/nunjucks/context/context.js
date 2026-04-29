@@ -26,7 +26,7 @@ export function context(request) {
     assetPath: `${assetPath}/assets`,
     serviceName: config.get('serviceName'),
     maxUploadFileSizeBytes: config.get('upload.maxFileSizeMb') * 1024 * 1024,
-    serviceUrl: '/',
+    serviceUrl: '/home',
     breadcrumbs: [],
     isAuthenticationRequired: config.get('isAuthenticationRequired'),
     getAssetPath(asset) {

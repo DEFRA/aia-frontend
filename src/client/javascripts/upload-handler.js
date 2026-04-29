@@ -12,7 +12,39 @@
  */
 
 import { validateDocxFile } from './file-validator.js'
-import { openWipModal } from './wip-modal-handler.js'
+
+// ── Error summary helper ───────────────────────────────────────────────────────
+
+function updateErrorSummary() {
+  const summary = document.getElementById('errorSummary')
+  const list = document.getElementById('errorSummaryList')
+  if (!summary || !list) return
+
+  const errors = []
+  const templateErr = document.getElementById('templateTypeError')
+  const templateErrText = document.getElementById('templateTypeErrorText')
+  if (templateErr && !templateErr.hidden && templateErrText?.textContent) {
+    errors.push({ href: '#templateType', text: templateErrText.textContent })
+  }
+  const fileErr = document.getElementById('fileError')
+  const fileErrText = document.getElementById('fileErrorText')
+  if (fileErr && !fileErr.hidden && fileErrText?.textContent) {
+    errors.push({ href: '#file', text: fileErrText.textContent })
+  }
+
+  list.innerHTML = errors
+    .map((e) => `<li><a href="${e.href}">${e.text}</a></li>`)
+    .join('')
+
+  if (errors.length > 0) {
+    summary.hidden = false
+    summary.style.display = 'block'
+    summary.focus()
+  } else {
+    summary.hidden = true
+    summary.style.display = 'none'
+  }
+}
 
 // ── Error display helpers ──────────────────────────────────────────────────────
 
@@ -107,6 +139,7 @@ export function initUploadHandler() {
         showFileError(result.message)
         this.value = '' // clear so the invalid file cannot be submitted
       }
+      updateErrorSummary()
     })
   }
 
@@ -147,9 +180,12 @@ export function initUploadHandler() {
         }
       }
 
-      if (hasError) return
+      if (hasError) {
+        updateErrorSummary()
+        return
+      }
 
-      openWipModal()
+      form.submit()
     })
   }
 }
