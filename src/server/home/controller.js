@@ -1,10 +1,16 @@
-/**
- * A GDS styled example home page controller.
- * Provided as an example, remove or modify as required.
- */
 import { createRequire } from 'module'
 import { config } from '../../config/config.js'
 import { buildBackendHeaders } from '../common/helpers/backend-headers.js'
+
+const STATUS_LABELS = {
+  UPLOADING: 'Uploading',
+  UPLOADED: 'Uploaded',
+  PENDING: 'Queued',
+  PROCESSING: 'Analysing',
+  COMPLETE: 'Completed',
+  PARTIAL_COMPLETE: 'Completed - Partially',
+  ERROR: 'Error'
+}
 
 const require = createRequire(import.meta.url)
 const fallbackUploads = require('./uploads.json')
@@ -157,7 +163,10 @@ export const homeController = {
       pagination,
       paginationAlignment: config.get('pagination.alignment'),
       maxUploadFileSizeBytes: config.get('upload.maxFileSizeMb') * 1024 * 1024,
-      uploadError
+      uploadError,
+      statusLabels: STATUS_LABELS,
+      pollIntervalMs: config.get('polling.intervalMs'),
+      pollMaxPolls: config.get('polling.maxPolls')
     })
   }
 }
@@ -240,4 +249,22 @@ async function streamToBuffer(stream) {
     chunks.push(chunk)
   }
   return Buffer.concat(chunks)
+}
+
+export const pollStatusController = {
+  async handler(request, h) {
+    try {
+      const res = await fetch(
+        `${config.get('backendApiUrl')}/documents/status`,
+        { headers: buildBackendHeaders(request) }
+      )
+      if (res.ok) {
+        const data = await res.json()
+        return h.response(data).type('application/json')
+      }
+    } catch (err) {
+      request.logger.error({ err }, 'Failed to fetch processing status')
+    }
+    return h.response({ processingDocumentIds: [] }).type('application/json')
+  }
 }

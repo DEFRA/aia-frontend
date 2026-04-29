@@ -64,7 +64,7 @@ function getMockResultContent(documentId) {
   return extractMarkdownContent(resultsData)
 }
 
-async function getApiResultContent(documentId, request) {
+async function getApiResult(documentId, request) {
   const backendApiUrl = config.get('backendApiUrl')
 
   if (!backendApiUrl) {
@@ -96,11 +96,11 @@ async function getApiResultContent(documentId, request) {
     }
 
     const body = await response.json()
-    // Backend returns { documentId, status, resultMd, errorMessage, ... }
-    if (body.status === 'ERROR') {
-      return body.errorMessage ?? 'An error occurred during processing.'
+    return {
+      status: body.status ?? null,
+      markdownContent: body.resultMd ?? '',
+      errorMessage: body.errorMessage ?? null
     }
-    return body.resultMd ?? ''
   } finally {
     clearTimeout(timeoutHandle)
   }
@@ -110,10 +110,21 @@ export const resultController = {
   async handler(request, h) {
     const documentId = request.query.documentId
     let markdownContent = ''
+    let status = null
+    let errorMessage = null
 
     try {
       try {
-        markdownContent = await getApiResultContent(documentId, request)
+        const apiResult = await getApiResult(documentId, request)
+        status = apiResult.status
+        errorMessage = apiResult.errorMessage
+
+        if (status === 'ERROR') {
+          markdownContent =
+            errorMessage ?? 'An error occurred during processing.'
+        } else {
+          markdownContent = apiResult.markdownContent
+        }
       } catch (apiErr) {
         request.logger.error(
           { err: apiErr, documentId },
@@ -136,7 +147,9 @@ export const resultController = {
     return h.view('result/index', {
       pageTitle: 'Result',
       heading: 'Result',
-      markdownContent
+      markdownContent,
+      status,
+      errorMessage
     })
   }
 }

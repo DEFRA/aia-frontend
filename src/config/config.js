@@ -271,6 +271,20 @@ export const config = convict({
     format: String,
     default: 'http://localhost:8086/api/v1',
     env: 'BACKEND_API_URL'
+  },
+  polling: {
+    intervalMs: {
+      doc: 'Interval between processing-status polls in milliseconds',
+      format: Number,
+      default: 30000,
+      env: 'POLL_INTERVAL_MS'
+    },
+    maxPolls: {
+      doc: 'Maximum number of status polls before showing a timeout message',
+      format: Number,
+      default: 20,
+      env: 'POLL_MAX_POLLS'
+    }
   }
 })
 

@@ -1,6 +1,6 @@
 import crypto from 'node:crypto'
 
-const DEFAULT_USER_ID = 'TestUser123'
+const DEFAULT_USER_ID = '00000000-0000-0000-0000-000000000001'
 const JWT_SECRET = 'aia-documents-secret-key-for-jwt-32-chars'
 
 function generateJWT(payload) {
@@ -26,7 +26,7 @@ export function buildBackendHeaders(request) {
   const userId = request.yar.get('userId') || DEFAULT_USER_ID
   const token =
     request.yar.get('token') ||
-    generateJWT({ sub: userId, name: 'Test User', admin: true })
+    generateJWT({ sub: userId, name: 'Guest User', admin: true })
 
   return {
     Authorization: `Bearer ${token}`,

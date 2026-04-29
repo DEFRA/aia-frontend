@@ -2,147 +2,147 @@
   {
     "originalFilename": "Test Project v0.1.docx",
     "templateType": "Solution Design Team",
-    "status": "Analysing",
+    "status": "PROCESSING",
     "createdAt": "31/03/2026 16:45:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Solution Design Document - AI Assure v0.01.docx",
     "templateType": "Solution Design Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "28/03/2026 15:30:00",
     "documentId": "UUID-1234-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Alpha v0.01.docx",
     "templateType": "Amber Team",
-    "status": "Error",
+    "status": "ERROR",
     "createdAt": "25/03/2026 14:10:00",
     "documentId": "UUID-1234-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.01.docx",
     "templateType": "Red Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "22/03/2026 13:05:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.02.docx",
     "templateType": "Green Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "19/03/2026 12:40:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.03.docx",
     "templateType": "Green Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "16/02/2026 11:25:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.04.docx",
     "templateType": "Green Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "13/02/2026 10:15:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.05.docx",
     "templateType": "Green Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "31/01/2026 09:50:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.06.docx",
     "templateType": "Green Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "28/01/2026 08:35:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.07.docx",
     "templateType": "Red Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "25/01/2026 16:20:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.08.docx",
     "templateType": "Green Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "22/01/2026 15:00:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.09.docx",
     "templateType": "Green Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "19/01/2026 13:45:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.10.docx",
     "templateType": "Red Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "31/12/2025 12:30:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.11.docx",
     "templateType": "Green Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "28/12/2025 11:15:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.12.docx",
     "templateType": "Amber Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "25/12/2025 10:05:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.13.docx",
     "templateType": "Green Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "22/12/2025 09:40:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.14.docx",
     "templateType": "Red Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "19/11/2025 16:10:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.15.docx",
     "templateType": "Green Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "16/11/2025 14:55:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.16.docx",
     "templateType": "Red Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "13/11/2025 13:20:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.17.docx",
     "templateType": "Red Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "31/10/2025 11:35:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   },
   {
     "originalFilename": "Project Beta v1.18.docx",
     "templateType": "Green Team",
-    "status": "Completed",
+    "status": "COMPLETE",
     "createdAt": "31/03/2025 09:00:00",
     "documentId": "UUID-4321-5678-9012-abcdef123456"
   }

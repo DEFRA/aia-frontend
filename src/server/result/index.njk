@@ -6,6 +6,18 @@
 
 <a href="/home" class="govuk-back-link no-print">Back to Upload</a>
 
+{% if status == 'PARTIAL_COMPLETE' %}
+<div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+  <div class="govuk-notification-banner__header">
+    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Partial result</h2>
+  </div>
+  <div class="govuk-notification-banner__content">
+    <p class="govuk-body">This assessment is incomplete. Not all agents responded within the processing window.</p>
+    {% if errorMessage %}<p class="govuk-body">{{ errorMessage }}</p>{% endif %}
+  </div>
+</div>
+{% endif %}
+
 <div class="govuk-warning-text">
   <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
   <strong class="govuk-warning-text__text">
