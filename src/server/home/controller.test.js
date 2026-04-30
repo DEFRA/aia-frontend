@@ -6,14 +6,32 @@ import { vi } from 'vitest'
 describe('#homeController', () => {
   let server
   let authCookie
+  let originalFetch
+
+  const mockDocuments = Array.from({ length: 10 }, (_, i) => ({
+    documentId: `id-${i}`,
+    originalFilename: `doc${i}.docx`,
+    status: 'COMPLETE'
+  }))
 
   beforeAll(async () => {
     server = await createServer()
     await server.initialize()
     authCookie = await getAuthCookie(server)
+    originalFetch = global.fetch
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        documents: mockDocuments,
+        total: 25,
+        page: 1,
+        limit: 10
+      })
+    })
   })
 
   afterAll(async () => {
+    global.fetch = originalFetch
     await server.stop({ timeout: 0 })
   })
 
@@ -141,6 +159,7 @@ describe('#homeController - API mode (mocked fetch)', () => {
       if (key === 'pagination.itemsPerPage') return 10
       if (key === 'pagination.alignment') return 'centre'
       if (key === 'upload.maxFileSizeMb') return 5
+      if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
       return null
     })
   }
@@ -199,7 +218,7 @@ describe('#homeController - API mode (mocked fetch)', () => {
   })
 
   test('Should fall back to mock data when API returns non-ok', async () => {
-    mockConfig()
+    mockConfig({ 'result.mockData': true })
 
     const originalFetch = global.fetch
     global.fetch = vi.fn().mockResolvedValue({
@@ -219,7 +238,7 @@ describe('#homeController - API mode (mocked fetch)', () => {
   })
 
   test('Should fall back to mock data when fetch throws network error', async () => {
-    mockConfig()
+    mockConfig({ 'result.mockData': true })
 
     const originalFetch = global.fetch
     global.fetch = vi.fn().mockRejectedValue(new Error('ECONNREFUSED'))
@@ -308,6 +327,7 @@ describe('#uploadController - unit tests', () => {
     configGetMock.mockImplementation((key) => {
       if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
       if (key === 'upload.maxFileSizeMb') return 5
+      if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
       return null
     })
   }

@@ -93,7 +93,7 @@ export const config = convict({
     mockData: {
       doc: 'Use local mock result files instead of invoking the backend documents API',
       format: Boolean,
-      default: true,
+      default: false,
       env: 'MOCK_DATA_RESULT'
     },
     apiTimeoutMs: {
@@ -271,6 +271,45 @@ export const config = convict({
     format: String,
     default: 'http://localhost:8086/api/v1',
     env: 'BACKEND_API_URL'
+  },
+  jwtSecret: {
+    doc: 'Secret used to sign backend JWT tokens — must match the backend JWT_SECRET',
+    format: String,
+    default: 'your-secret-key-at-least-32-chars',
+    env: 'JWT_SECRET',
+    sensitive: true
+  },
+  generateLog: {
+    doc: 'Master switch — when false, fetchWithLog emits no debug logs and writes no log file',
+    format: Boolean,
+    default: false,
+    env: 'GENERATE_LOG'
+  },
+  generateLogFile: {
+    doc: 'When true (and GENERATE_LOG is also true), backend API calls are appended to backend-api.log',
+    format: Boolean,
+    default: false,
+    env: 'GENERATE_LOG_FILE'
+  },
+  polling: {
+    intervalMs: {
+      doc: 'Interval between processing-status polls in milliseconds',
+      format: Number,
+      default: 30000,
+      env: 'POLL_INTERVAL_MS'
+    },
+    maxPolls: {
+      doc: 'Maximum number of status polls before showing a timeout message',
+      format: Number,
+      default: 20,
+      env: 'POLL_MAX_POLLS'
+    }
+  },
+  guestUser: {
+    doc: 'Resolve the current user from GET /users/me on the first authenticated request and cache in session. Set false when SSO provides the user instead.',
+    format: Boolean,
+    default: true,
+    env: 'GUEST_USER'
   }
 })
 

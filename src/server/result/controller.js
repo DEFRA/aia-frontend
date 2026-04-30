@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 import { config } from '../../config/config.js'
 import { buildBackendHeaders } from '../common/helpers/backend-headers.js'
+import { fetchWithLog } from '../common/helpers/fetch-with-log.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -64,7 +65,7 @@ function getMockResultContent(documentId) {
   return extractMarkdownContent(resultsData)
 }
 
-async function getApiResultContent(documentId, request) {
+async function getApiResult(documentId, request) {
   const backendApiUrl = config.get('backendApiUrl')
 
   if (!backendApiUrl) {
@@ -80,14 +81,15 @@ async function getApiResultContent(documentId, request) {
   const timeoutHandle = setTimeout(() => timeoutController.abort(), timeoutMs)
 
   try {
-    const response = await fetch(`${backendApiUrl}/documents/${documentId}`, {
-      method: 'GET',
-      signal: timeoutController.signal,
-      headers: {
-        ...buildBackendHeaders(request),
-        accept: 'application/json'
-      }
-    })
+    const response = await fetchWithLog(
+      `${backendApiUrl}/documents/${documentId}`,
+      {
+        method: 'GET',
+        signal: timeoutController.signal,
+        headers: { ...buildBackendHeaders(request), accept: 'application/json' }
+      },
+      request.logger
+    )
 
     if (!response.ok) {
       throw new Error(
@@ -96,11 +98,11 @@ async function getApiResultContent(documentId, request) {
     }
 
     const body = await response.json()
-    // Backend returns { documentId, status, resultMd, errorMessage, ... }
-    if (body.status === 'ERROR') {
-      return body.errorMessage ?? 'An error occurred during processing.'
+    return {
+      status: body.status ?? null,
+      markdownContent: body.resultMd ?? '',
+      errorMessage: body.errorMessage ?? null
     }
-    return body.resultMd ?? ''
   } finally {
     clearTimeout(timeoutHandle)
   }
@@ -110,33 +112,38 @@ export const resultController = {
   async handler(request, h) {
     const documentId = request.query.documentId
     let markdownContent = ''
+    let status = null
+    let errorMessage = null
 
     try {
-      try {
-        markdownContent = await getApiResultContent(documentId, request)
-      } catch (apiErr) {
-        request.logger.error(
-          { err: apiErr, documentId },
-          'Backend API unavailable for result content, falling back to mock data'
-        )
-        markdownContent = getMockResultContent(documentId)
+      const apiResult = await getApiResult(documentId, request)
+      status = apiResult.status
+      errorMessage = apiResult.errorMessage
+
+      if (status === 'ERROR') {
+        markdownContent = errorMessage ?? 'An error occurred during processing.'
+      } else {
+        markdownContent = apiResult.markdownContent
       }
 
       if (!markdownContent) {
         markdownContent = 'No result content available.'
       }
     } catch (err) {
-      request.logger.error(
-        { err, documentId },
-        'Failed to load result content from configured data source'
-      )
+      request.logger.error({ err, documentId }, 'Failed to load result content')
       markdownContent = 'Error loading result content.'
+
+      if (config.get('result.mockData')) {
+        markdownContent = getMockResultContent(documentId)
+      }
     }
 
     return h.view('result/index', {
       pageTitle: 'Result',
       heading: 'Result',
-      markdownContent
+      markdownContent,
+      status,
+      errorMessage
     })
   }
 }

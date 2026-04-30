@@ -1,7 +1,7 @@
 import crypto from 'node:crypto'
+import { config } from '../../../config/config.js'
 
-const DEFAULT_USER_ID = 'TestUser123'
-const JWT_SECRET = 'aia-documents-secret-key-for-jwt-32-chars'
+const DEFAULT_USER_ID = '00000000-0000-0000-0000-000000000001'
 
 function generateJWT(payload) {
   const header = Buffer.from(
@@ -15,7 +15,7 @@ function generateJWT(payload) {
   ).toString('base64url')
 
   const signature = crypto
-    .createHmac('sha256', JWT_SECRET)
+    .createHmac('sha256', config.get('jwtSecret'))
     .update(`${header}.${body}`)
     .digest('base64url')
 
@@ -26,7 +26,7 @@ export function buildBackendHeaders(request) {
   const userId = request.yar.get('userId') || DEFAULT_USER_ID
   const token =
     request.yar.get('token') ||
-    generateJWT({ sub: userId, name: 'Test User', admin: true })
+    generateJWT({ sub: userId, name: 'Guest User', admin: true })
 
   return {
     Authorization: `Bearer ${token}`,

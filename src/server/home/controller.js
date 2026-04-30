@@ -1,10 +1,17 @@
-/**
- * A GDS styled example home page controller.
- * Provided as an example, remove or modify as required.
- */
 import { createRequire } from 'module'
 import { config } from '../../config/config.js'
 import { buildBackendHeaders } from '../common/helpers/backend-headers.js'
+import { fetchWithLog } from '../common/helpers/fetch-with-log.js'
+
+const STATUS_LABELS = {
+  UPLOADING: 'Uploading',
+  UPLOADED: 'Uploaded',
+  PENDING: 'Queued',
+  PROCESSING: 'Analysing',
+  COMPLETE: 'Completed',
+  PARTIAL_COMPLETE: 'Completed - Partially',
+  ERROR: 'Error'
+}
 
 const require = createRequire(import.meta.url)
 const fallbackUploads = require('./uploads.json')
@@ -96,21 +103,25 @@ export const homeController = {
     let useFallback = false
 
     try {
-      const res = await fetch(
+      const res = await fetchWithLog(
         `${config.get('backendApiUrl')}/documents?page=${requestedPage}&limit=${itemsPerPage}`,
-        { headers: buildBackendHeaders(request) }
+        { headers: buildBackendHeaders(request) },
+        request.logger
       )
       if (res.ok) {
         const body = await res.json()
-        // Backend returns { documents, total, page, limit }
         uploadsData = body.documents ?? []
         totalItems = body.total ?? uploadsData.length
       } else {
-        useFallback = true
+        request.logger.error(
+          { status: res.status },
+          'Upload history API returned non-OK response'
+        )
+        if (config.get('result.mockData')) useFallback = true
       }
     } catch (err) {
       request.logger.error({ err }, 'Failed to fetch upload history')
-      useFallback = true
+      if (config.get('result.mockData')) useFallback = true
     }
 
     // Read and clear any upload error stored by the POST handler
@@ -157,7 +168,10 @@ export const homeController = {
       pagination,
       paginationAlignment: config.get('pagination.alignment'),
       maxUploadFileSizeBytes: config.get('upload.maxFileSizeMb') * 1024 * 1024,
-      uploadError
+      uploadError,
+      statusLabels: STATUS_LABELS,
+      pollIntervalMs: config.get('polling.intervalMs'),
+      pollMaxPolls: config.get('polling.maxPolls')
     })
   }
 }
@@ -199,11 +213,15 @@ export const uploadController = {
     formData.append('fileName', fileName)
 
     try {
-      const res = await fetch(backendUrl, {
-        method: 'POST',
-        headers: buildBackendHeaders(request),
-        body: formData
-      })
+      const res = await fetchWithLog(
+        backendUrl,
+        {
+          method: 'POST',
+          headers: buildBackendHeaders(request),
+          body: formData
+        },
+        request.logger
+      )
       request.logger.info({ status: res.status }, 'Backend upload response')
 
       const responseBody = await res.json().catch(() => null)
@@ -240,4 +258,23 @@ async function streamToBuffer(stream) {
     chunks.push(chunk)
   }
   return Buffer.concat(chunks)
+}
+
+export const pollStatusController = {
+  async handler(request, h) {
+    try {
+      const res = await fetchWithLog(
+        `${config.get('backendApiUrl')}/documents/status`,
+        { headers: buildBackendHeaders(request) },
+        request.logger
+      )
+      if (res.ok) {
+        const data = await res.json()
+        return h.response(data).type('application/json')
+      }
+    } catch (err) {
+      request.logger.error({ err }, 'Failed to fetch processing status')
+    }
+    return h.response({ processingDocumentIds: [] }).type('application/json')
+  }
 }

@@ -57,8 +57,12 @@
   <div class="upload-history-header">
     <h2 class="govuk-heading-m">Upload History</h2>
   </div>
-  
-<table class="govuk-table">
+
+  <div id="pollingTimeoutNotice" class="govuk-inset-text" hidden>
+    This assessment is taking longer than expected. You can leave this page and check back in your history.
+  </div>
+
+<table id="uploadHistoryTable" class="govuk-table" data-poll-interval-ms="{{ pollIntervalMs }}" data-poll-max-polls="{{ pollMaxPolls }}">
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
         <th class="govuk-table__header">Filename</th>
@@ -70,15 +74,15 @@
     </thead>
     <tbody class="govuk-table__body">
       {% for upload in uploads %}
-      <tr class="govuk-table__row">
+      <tr class="govuk-table__row" data-document-id="{{ upload.documentId }}" data-document-status="{{ upload.status }}">
         <td class="govuk-table__cell">{{ upload.originalFilename }}</td>
         <td class="govuk-table__cell">{{ upload.templateType }}</td>
-        <td class="govuk-table__cell"><span class="status-badge status-{{ upload.status | lower }}">{{ upload.status }}</span></td>
+        <td class="govuk-table__cell"><span class="status-badge status-{{ upload.status | lower }}">{{ statusLabels[upload.status] or upload.status }}</span></td>
         <td class="govuk-table__cell">{{ upload.createdAt }}</td>
         <td class="govuk-table__cell">
-          {% if upload.status == 'Completed' %}
+          {% if upload.status == 'COMPLETE' or upload.status == 'PARTIAL_COMPLETE' %}
             <a href="/result?documentId={{ upload.documentId }}" class="govuk-link">View Results</a>
-          {% elif upload.status == 'Error' %}
+          {% elif upload.status == 'ERROR' %}
           {% else %}
             <span class="govuk-hint">Processing...</span>
           {% endif %}
