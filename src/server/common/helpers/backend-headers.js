@@ -1,7 +1,7 @@
 import crypto from 'node:crypto'
+import { config } from '../../../config/config.js'
 
 const DEFAULT_USER_ID = '00000000-0000-0000-0000-000000000001'
-const JWT_SECRET = 'aia-documents-secret-key-for-jwt-32-chars'
 
 function generateJWT(payload) {
   const header = Buffer.from(
@@ -15,7 +15,7 @@ function generateJWT(payload) {
   ).toString('base64url')
 
   const signature = crypto
-    .createHmac('sha256', JWT_SECRET)
+    .createHmac('sha256', config.get('jwtSecret'))
     .update(`${header}.${body}`)
     .digest('base64url')
 

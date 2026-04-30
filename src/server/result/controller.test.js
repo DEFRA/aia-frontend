@@ -122,6 +122,7 @@ describe('#resultController', () => {
         if (key === 'result.mockData') return true
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
+        if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
         return null
       })
 
@@ -145,6 +146,7 @@ describe('#resultController', () => {
         if (key === 'result.mockData') return true
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
+        if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
         return null
       })
 
@@ -172,6 +174,7 @@ describe('#resultController', () => {
         if (key === 'result.mockData') return false
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
+        if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
         return null
       })
 
@@ -205,6 +208,7 @@ describe('#resultController', () => {
         if (key === 'result.mockData') return false
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
+        if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
         return null
       })
 
@@ -234,6 +238,7 @@ describe('#resultController', () => {
         if (key === 'result.mockData') return true
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
+        if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
         return null
       })
 
@@ -257,6 +262,7 @@ describe('#resultController', () => {
         if (key === 'result.mockData') return false
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
+        if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
         return null
       })
 
@@ -286,6 +292,7 @@ describe('#resultController', () => {
         if (key === 'result.mockData') return false
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
+        if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
         return null
       })
 
@@ -313,6 +320,7 @@ describe('#resultController', () => {
         if (key === 'result.mockData') return false
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
+        if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
         return null
       })
 

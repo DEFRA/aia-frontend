@@ -272,6 +272,25 @@ export const config = convict({
     default: 'http://localhost:8086/api/v1',
     env: 'BACKEND_API_URL'
   },
+  jwtSecret: {
+    doc: 'Secret used to sign backend JWT tokens — must match the backend JWT_SECRET',
+    format: String,
+    default: 'your-secret-key-at-least-32-chars',
+    env: 'JWT_SECRET',
+    sensitive: true
+  },
+  generateLog: {
+    doc: 'Master switch — when false, fetchWithLog emits no debug logs and writes no log file',
+    format: Boolean,
+    default: false,
+    env: 'GENERATE_LOG'
+  },
+  generateLogFile: {
+    doc: 'When true (and GENERATE_LOG is also true), backend API calls are appended to backend-api.log',
+    format: Boolean,
+    default: false,
+    env: 'GENERATE_LOG_FILE'
+  },
   polling: {
     intervalMs: {
       doc: 'Interval between processing-status polls in milliseconds',

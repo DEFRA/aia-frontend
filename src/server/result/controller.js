@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 import { config } from '../../config/config.js'
 import { buildBackendHeaders } from '../common/helpers/backend-headers.js'
+import { fetchWithLog } from '../common/helpers/fetch-with-log.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -80,14 +81,15 @@ async function getApiResult(documentId, request) {
   const timeoutHandle = setTimeout(() => timeoutController.abort(), timeoutMs)
 
   try {
-    const response = await fetch(`${backendApiUrl}/documents/${documentId}`, {
-      method: 'GET',
-      signal: timeoutController.signal,
-      headers: {
-        ...buildBackendHeaders(request),
-        accept: 'application/json'
-      }
-    })
+    const response = await fetchWithLog(
+      `${backendApiUrl}/documents/${documentId}`,
+      {
+        method: 'GET',
+        signal: timeoutController.signal,
+        headers: { ...buildBackendHeaders(request), accept: 'application/json' }
+      },
+      request.logger
+    )
 
     if (!response.ok) {
       throw new Error(

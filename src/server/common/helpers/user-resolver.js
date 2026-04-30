@@ -1,5 +1,6 @@
 import { config } from '../../../config/config.js'
 import { buildBackendHeaders } from './backend-headers.js'
+import { fetchWithLog } from './fetch-with-log.js'
 
 const GUEST_FALLBACK = {
   userId: '00000000-0000-0000-0000-000000000001',
@@ -33,9 +34,11 @@ export async function resolveUser(request) {
   let user = GUEST_FALLBACK
 
   try {
-    const res = await fetch(`${config.get('backendApiUrl')}/users/me`, {
-      headers: buildBackendHeaders(request)
-    })
+    const res = await fetchWithLog(
+      `${config.get('backendApiUrl')}/users/me`,
+      { headers: buildBackendHeaders(request) },
+      request.logger
+    )
 
     if (res.ok) {
       user = await res.json()

@@ -70,12 +70,13 @@ All variables are validated at startup by Convict (`src/config/config.js`). Defa
 
 ### Backend integration
 
-| Variable                | Default                        | Description                                                                                             |
-| ----------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------- |
-| `BACKEND_API_URL`       | `http://localhost:8086/api/v1` | Backend service base URL                                                                                |
-| `MOCK_DATA_RESULT`      | `false`                        | When `true`, falls back to local mock JSON **only if** the backend call fails                           |
-| `RESULT_API_TIMEOUT_MS` | `15000`                        | Timeout for result/document API requests (ms)                                                           |
-| `GUEST_USER`            | `true`                         | When `true`, resolves user via `GET /users/me` on first request; set `false` when SSO provides the user |
+| Variable                | Default                             | Description                                                                                             |
+| ----------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `BACKEND_API_URL`       | `http://localhost:8086/api/v1`      | Backend service base URL                                                                                |
+| `JWT_SECRET`            | `your-secret-key-at-least-32-chars` | Secret used to sign backend JWT tokens — **must match the backend `JWT_SECRET`**                        |
+| `MOCK_DATA_RESULT`      | `false`                             | When `true`, falls back to local mock JSON **only if** the backend call fails                           |
+| `RESULT_API_TIMEOUT_MS` | `15000`                             | Timeout for result/document API requests (ms)                                                           |
+| `GUEST_USER`            | `true`                              | When `true`, resolves user via `GET /users/me` on first request; set `false` when SSO provides the user |
 
 ### Polling
 
@@ -99,10 +100,12 @@ All variables are validated at startup by Convict (`src/config/config.js`). Defa
 
 ### Logging
 
-| Variable     | Default                            | Description                                                                         |
-| ------------ | ---------------------------------- | ----------------------------------------------------------------------------------- |
-| `LOG_LEVEL`  | `info`                             | Pino log level (`fatal` / `error` / `warn` / `info` / `debug` / `trace` / `silent`) |
-| `LOG_FORMAT` | `pino-pretty` (dev) / `ecs` (prod) | Log output format                                                                   |
+| Variable            | Default                            | Description                                                                                                                                       |
+| ------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `LOG_LEVEL`         | `info`                             | Pino log level (`fatal` / `error` / `warn` / `info` / `debug` / `trace` / `silent`)                                                               |
+| `LOG_FORMAT`        | `pino-pretty` (dev) / `ecs` (prod) | Log output format                                                                                                                                 |
+| `GENERATE_LOG`      | `false`                            | Master switch — when `true`, enables debug logging of all backend API calls                                                                       |
+| `GENERATE_LOG_FILE` | `false`                            | When `true` (and `GENERATE_LOG=true`), writes backend API calls to `backend-api.log` (newest entry at top). Has no effect if `GENERATE_LOG=false` |
 
 ---
 

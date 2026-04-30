@@ -1,6 +1,7 @@
 import { createRequire } from 'module'
 import { config } from '../../config/config.js'
 import { buildBackendHeaders } from '../common/helpers/backend-headers.js'
+import { fetchWithLog } from '../common/helpers/fetch-with-log.js'
 
 const STATUS_LABELS = {
   UPLOADING: 'Uploading',
@@ -102,9 +103,10 @@ export const homeController = {
     let useFallback = false
 
     try {
-      const res = await fetch(
+      const res = await fetchWithLog(
         `${config.get('backendApiUrl')}/documents?page=${requestedPage}&limit=${itemsPerPage}`,
-        { headers: buildBackendHeaders(request) }
+        { headers: buildBackendHeaders(request) },
+        request.logger
       )
       if (res.ok) {
         const body = await res.json()
@@ -211,11 +213,15 @@ export const uploadController = {
     formData.append('fileName', fileName)
 
     try {
-      const res = await fetch(backendUrl, {
-        method: 'POST',
-        headers: buildBackendHeaders(request),
-        body: formData
-      })
+      const res = await fetchWithLog(
+        backendUrl,
+        {
+          method: 'POST',
+          headers: buildBackendHeaders(request),
+          body: formData
+        },
+        request.logger
+      )
       request.logger.info({ status: res.status }, 'Backend upload response')
 
       const responseBody = await res.json().catch(() => null)
@@ -257,9 +263,10 @@ async function streamToBuffer(stream) {
 export const pollStatusController = {
   async handler(request, h) {
     try {
-      const res = await fetch(
+      const res = await fetchWithLog(
         `${config.get('backendApiUrl')}/documents/status`,
-        { headers: buildBackendHeaders(request) }
+        { headers: buildBackendHeaders(request) },
+        request.logger
       )
       if (res.ok) {
         const data = await res.json()

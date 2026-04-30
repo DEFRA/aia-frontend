@@ -159,6 +159,7 @@ describe('#homeController - API mode (mocked fetch)', () => {
       if (key === 'pagination.itemsPerPage') return 10
       if (key === 'pagination.alignment') return 'centre'
       if (key === 'upload.maxFileSizeMb') return 5
+      if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
       return null
     })
   }
@@ -326,6 +327,7 @@ describe('#uploadController - unit tests', () => {
     configGetMock.mockImplementation((key) => {
       if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
       if (key === 'upload.maxFileSizeMb') return 5
+      if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
       return null
     })
   }
