@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 
 import { config } from '../config.js'
 import { context } from './context/context.js'
+import { toUkDateTime } from './filters/to-uk-date-time.js'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const nunjucksEnvironment = nunjucks.configure(
@@ -22,6 +23,8 @@ const nunjucksEnvironment = nunjucks.configure(
     noCache: config.get('nunjucks.noCache')
   }
 )
+
+nunjucksEnvironment.addFilter('toUkDateTime', toUkDateTime)
 
 export const nunjucksConfig = {
   plugin: hapiVision,
