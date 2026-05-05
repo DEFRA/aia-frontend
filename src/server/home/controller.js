@@ -232,7 +232,9 @@ export const uploadController = {
       ) {
         const errorMessage =
           responseBody?.errorMessage ??
-          responseBody?.detail?.[0]?.msg ??
+          (typeof responseBody?.detail === 'string'
+            ? responseBody.detail
+            : responseBody?.detail?.[0]?.msg) ??
           'The document could not be uploaded. Please try again.'
         request.logger.error(
           { status: res.status, responseBody },
