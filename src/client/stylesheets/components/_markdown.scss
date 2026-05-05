@@ -4,6 +4,20 @@
   border: 1px solid #b1b4b6;
   border-radius: 4px;
   background-color: #f8f8f8;
+
+  // Prevent long filenames and unbreakable strings from overflowing
+  overflow-wrap: break-word;
+  word-break: break-word;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
 }
 
 .markdown-content table {
