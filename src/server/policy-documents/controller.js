@@ -1,3 +1,4 @@
+import Boom from '@hapi/boom'
 import { createRequire } from 'module'
 import { config } from '../../config/config.js'
 import { buildBackendHeaders } from '../common/helpers/backend-headers.js'
@@ -248,11 +249,24 @@ export const policyDocumentsController = {
           { status: res.status },
           'Policy documents API returned non-OK response'
         )
-        useFallback = true
+        if (config.get('useMockData')) {
+          useFallback = true
+        } else {
+          throw Boom.badGateway(
+            'The service is temporarily unavailable. Try again later.'
+          )
+        }
       }
     } catch (err) {
+      if (err.isBoom) throw err
       request.logger.error({ err }, 'Failed to fetch policy documents')
-      useFallback = true
+      if (config.get('useMockData')) {
+        useFallback = true
+      } else {
+        throw Boom.badGateway(
+          'The service is temporarily unavailable. Try again later.'
+        )
+      }
     }
 
     let pageDocuments
