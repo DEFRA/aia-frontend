@@ -218,7 +218,7 @@ describe('#homeController - API mode (mocked fetch)', () => {
   })
 
   test('Should fall back to mock data when API returns non-ok', async () => {
-    mockConfig({ 'useMockData': true })
+    mockConfig({ useMockData: true })
 
     const originalFetch = global.fetch
     global.fetch = vi.fn().mockResolvedValue({
@@ -238,7 +238,7 @@ describe('#homeController - API mode (mocked fetch)', () => {
   })
 
   test('Should fall back to mock data when fetch throws network error', async () => {
-    mockConfig({ 'useMockData': true })
+    mockConfig({ useMockData: true })
 
     const originalFetch = global.fetch
     global.fetch = vi.fn().mockRejectedValue(new Error('ECONNREFUSED'))

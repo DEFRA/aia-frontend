@@ -136,7 +136,9 @@ export const resultController = {
       if (config.get('useMockData')) {
         markdownContent = getMockResultContent(documentId)
       } else {
-        throw Boom.badGateway('The service is temporarily unavailable. Try again later.')
+        throw Boom.badGateway(
+          'The service is temporarily unavailable. Try again later.'
+        )
       }
     }
 

@@ -93,22 +93,23 @@ export const costController = {
           totalItems = fallbackData.pagination?.total ?? costUsageData.length
           summaryData = fallbackData.summary ?? null
         } else {
-          throw Boom.badGateway('The service is temporarily unavailable. Try again later.')
+          throw Boom.badGateway(
+            'The service is temporarily unavailable. Try again later.'
+          )
         }
       }
     } catch (err) {
       if (err.isBoom) throw err
-      request.logger.error(
-        { err },
-        'Failed to fetch cost usage'
-      )
+      request.logger.error({ err }, 'Failed to fetch cost usage')
       if (config.get('useMockData')) {
         usedFallback = true
         costUsageData = fallbackData.costUsage ?? []
         totalItems = fallbackData.pagination?.total ?? costUsageData.length
         summaryData = fallbackData.summary ?? null
       } else {
-        throw Boom.badGateway('The service is temporarily unavailable. Try again later.')
+        throw Boom.badGateway(
+          'The service is temporarily unavailable. Try again later.'
+        )
       }
     }
 

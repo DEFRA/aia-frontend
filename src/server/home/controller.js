@@ -121,7 +121,9 @@ export const homeController = {
         if (config.get('useMockData')) {
           useFallback = true
         } else {
-          throw Boom.badGateway('The service is temporarily unavailable. Try again later.')
+          throw Boom.badGateway(
+            'The service is temporarily unavailable. Try again later.'
+          )
         }
       }
     } catch (err) {
@@ -130,7 +132,9 @@ export const homeController = {
       if (config.get('useMockData')) {
         useFallback = true
       } else {
-        throw Boom.badGateway('The service is temporarily unavailable. Try again later.')
+        throw Boom.badGateway(
+          'The service is temporarily unavailable. Try again later.'
+        )
       }
     }
 
