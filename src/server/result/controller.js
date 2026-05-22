@@ -4,6 +4,7 @@
  * and renders the resultMd markdown content.
  */
 
+import Boom from '@hapi/boom'
 import { readFileSync } from 'fs'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
@@ -131,10 +132,13 @@ export const resultController = {
       }
     } catch (err) {
       request.logger.error({ err, documentId }, 'Failed to load result content')
-      markdownContent = 'Error loading result content.'
 
-      if (config.get('result.mockData')) {
+      if (config.get('useMockData')) {
         markdownContent = getMockResultContent(documentId)
+      } else {
+        throw Boom.badGateway(
+          'The service is temporarily unavailable. Try again later.'
+        )
       }
     }
 
