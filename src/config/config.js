@@ -101,13 +101,13 @@ export const config = convict({
       default: ['SharePoint', 'Confluence', 'GitHub']
     }
   },
+  useMockData: {
+    doc: 'When true, if a backend API call fails the UI will display data from local mock JSON files. When false, API failures redirect to the GOV.UK error page.',
+    format: Boolean,
+    default: false,
+    env: 'USE_MOCK_DATA'
+  },
   result: {
-    mockData: {
-      doc: 'Use local mock result files instead of invoking the backend documents API',
-      format: Boolean,
-      default: false,
-      env: 'MOCK_DATA_RESULT'
-    },
     apiTimeoutMs: {
       doc: 'Timeout for result/document API requests in milliseconds',
       format: Number,

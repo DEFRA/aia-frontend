@@ -1,3 +1,4 @@
+import Boom from '@hapi/boom'
 import { createRequire } from 'module'
 import { config } from '../../config/config.js'
 import { buildBackendHeaders } from '../common/helpers/backend-headers.js'
@@ -84,22 +85,31 @@ export const costController = {
       } else {
         request.logger.error(
           { status: res.status },
-          'Cost usage API returned non-OK response, using fallback'
+          'Cost usage API returned non-OK response'
         )
+        if (config.get('useMockData')) {
+          usedFallback = true
+          costUsageData = fallbackData.costUsage ?? []
+          totalItems = fallbackData.pagination?.total ?? costUsageData.length
+          summaryData = fallbackData.summary ?? null
+        } else {
+          throw Boom.badGateway('The service is temporarily unavailable. Try again later.')
+        }
+      }
+    } catch (err) {
+      if (err.isBoom) throw err
+      request.logger.error(
+        { err },
+        'Failed to fetch cost usage'
+      )
+      if (config.get('useMockData')) {
         usedFallback = true
         costUsageData = fallbackData.costUsage ?? []
         totalItems = fallbackData.pagination?.total ?? costUsageData.length
         summaryData = fallbackData.summary ?? null
+      } else {
+        throw Boom.badGateway('The service is temporarily unavailable. Try again later.')
       }
-    } catch (err) {
-      request.logger.error(
-        { err },
-        'Failed to fetch cost usage, using fallback'
-      )
-      usedFallback = true
-      costUsageData = fallbackData.costUsage ?? []
-      totalItems = fallbackData.pagination?.total ?? costUsageData.length
-      summaryData = fallbackData.summary ?? null
     }
 
     const totalPages = Math.ceil(totalItems / itemsPerPage) || 1

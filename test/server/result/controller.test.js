@@ -102,7 +102,7 @@ describe('#resultController', () => {
 
     test('Should fall back to mock data when BACKEND_API_URL is not configured', async () => {
       configGetMock.mockImplementation((key) => {
-        if (key === 'result.mockData') return true
+        if (key === 'useMockData') return true
         if (key === 'backendApiUrl') return null
         return null
       })
@@ -119,7 +119,7 @@ describe('#resultController', () => {
 
     test('Should fall back to mock data when fetch throws a network error', async () => {
       configGetMock.mockImplementation((key) => {
-        if (key === 'result.mockData') return true
+        if (key === 'useMockData') return true
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
         if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
@@ -143,7 +143,7 @@ describe('#resultController', () => {
 
     test('Should fall back to mock data when API responds with non-ok status', async () => {
       configGetMock.mockImplementation((key) => {
-        if (key === 'result.mockData') return true
+        if (key === 'useMockData') return true
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
         if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
@@ -171,7 +171,7 @@ describe('#resultController', () => {
 
     test('Should return API markdown content when fetch succeeds', async () => {
       configGetMock.mockImplementation((key) => {
-        if (key === 'result.mockData') return false
+        if (key === 'useMockData') return false
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
         if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
@@ -205,7 +205,7 @@ describe('#resultController', () => {
 
     test('Should return fallback message when API returns empty content', async () => {
       configGetMock.mockImplementation((key) => {
-        if (key === 'result.mockData') return false
+        if (key === 'useMockData') return false
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
         if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
@@ -235,7 +235,7 @@ describe('#resultController', () => {
 
     test('Should fall back to mock data when documentId is missing', async () => {
       configGetMock.mockImplementation((key) => {
-        if (key === 'result.mockData') return true
+        if (key === 'useMockData') return true
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
         if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
@@ -259,7 +259,7 @@ describe('#resultController', () => {
 
     test('Should return error message when API returns ERROR status', async () => {
       configGetMock.mockImplementation((key) => {
-        if (key === 'result.mockData') return false
+        if (key === 'useMockData') return false
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
         if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
@@ -289,7 +289,7 @@ describe('#resultController', () => {
 
     test('Should return "No result content available" when API returns no resultMd', async () => {
       configGetMock.mockImplementation((key) => {
-        if (key === 'result.mockData') return false
+        if (key === 'useMockData') return false
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
         if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
@@ -322,7 +322,7 @@ describe('#resultController', () => {
 
       test('Should return markdownContent field value from mock data object', async () => {
         configGetMock.mockImplementation((key) => {
-          if (key === 'result.mockData') return true
+          if (key === 'useMockData') return true
           if (key === 'backendApiUrl') return null
           if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
           return null
@@ -355,7 +355,7 @@ describe('#resultController', () => {
 
       test('Should return empty string when mock data has no recognised content fields', async () => {
         configGetMock.mockImplementation((key) => {
-          if (key === 'result.mockData') return true
+          if (key === 'useMockData') return true
           if (key === 'backendApiUrl') return null
           if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
           return null
@@ -385,7 +385,7 @@ describe('#resultController', () => {
 
       test('Should handle parseJsonPayload catch path when inner string is not valid JSON', async () => {
         configGetMock.mockImplementation((key) => {
-          if (key === 'result.mockData') return true
+          if (key === 'useMockData') return true
           if (key === 'backendApiUrl') return null
           if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
           return null
@@ -420,7 +420,7 @@ describe('#resultController', () => {
 
     test('Should handle parseJsonPayload with a JSON string payload', async () => {
       configGetMock.mockImplementation((key) => {
-        if (key === 'result.mockData') return false
+        if (key === 'useMockData') return false
         if (key === 'backendApiUrl') return 'http://api.example.com/api/v1'
         if (key === 'result.apiTimeoutMs') return 5000
         if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'

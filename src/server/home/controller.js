@@ -1,3 +1,4 @@
+import Boom from '@hapi/boom'
 import { createRequire } from 'module'
 import { config } from '../../config/config.js'
 import { buildBackendHeaders } from '../common/helpers/backend-headers.js'
@@ -117,11 +118,20 @@ export const homeController = {
           { status: res.status },
           'Upload history API returned non-OK response'
         )
-        if (config.get('result.mockData')) useFallback = true
+        if (config.get('useMockData')) {
+          useFallback = true
+        } else {
+          throw Boom.badGateway('The service is temporarily unavailable. Try again later.')
+        }
       }
     } catch (err) {
+      if (err.isBoom) throw err
       request.logger.error({ err }, 'Failed to fetch upload history')
-      if (config.get('result.mockData')) useFallback = true
+      if (config.get('useMockData')) {
+        useFallback = true
+      } else {
+        throw Boom.badGateway('The service is temporarily unavailable. Try again later.')
+      }
     }
 
     // Read and clear any upload error stored by the POST handler

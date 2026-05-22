@@ -236,6 +236,7 @@ describe('#costController - unit tests', () => {
       if (key === 'pagination.itemsPerPage') return 10
       if (key === 'pagination.alignment') return 'left'
       if (key === 'jwtSecret') return 'test-secret-key-at-least-32-chars-x'
+      if (key === 'useMockData') return true
       return null
     })
   }
