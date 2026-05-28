@@ -128,7 +128,10 @@ export const homeController = {
       }
     } catch (err) {
       if (err.isBoom) throw err
-      request.logger.error({ err, stack: err.stack }, 'Failed to fetch upload history')
+      request.logger.error(
+        { err, stack: err.stack },
+        'Failed to fetch upload history'
+      )
       if (config.get('useMockData')) {
         useFallback = true
       } else {
@@ -289,7 +292,10 @@ export const pollStatusController = {
         return h.response(data).type('application/json')
       }
     } catch (err) {
-      request.logger.error({ err, stack: err.stack }, 'Failed to fetch processing status')
+      request.logger.error(
+        { err, stack: err.stack },
+        'Failed to fetch processing status'
+      )
     }
     return h.response({ processingDocumentIds: [] }).type('application/json')
   }
