@@ -100,7 +100,7 @@ export const costController = {
       }
     } catch (err) {
       if (err.isBoom) throw err
-      request.logger.error({ err }, 'Failed to fetch cost usage')
+      request.logger.error({ err, stack: err.stack }, 'Failed to fetch cost usage')
       if (config.get('useMockData')) {
         usedFallback = true
         costUsageData = fallbackData.costUsage ?? []

@@ -131,7 +131,7 @@ export const resultController = {
         markdownContent = 'No result content available.'
       }
     } catch (err) {
-      request.logger.error({ err, documentId }, 'Failed to load result content')
+      request.logger.error({ err, stack: err.stack, documentId }, 'Failed to load result content')
 
       if (config.get('useMockData')) {
         markdownContent = getMockResultContent(documentId)
