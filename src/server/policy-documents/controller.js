@@ -259,7 +259,10 @@ export const policyDocumentsController = {
       }
     } catch (err) {
       if (err.isBoom) throw err
-      request.logger.error({ err }, 'Failed to fetch policy documents')
+      request.logger.error(
+        { err, stack: err.stack },
+        'Failed to fetch policy documents'
+      )
       if (config.get('useMockData')) {
         useFallback = true
       } else {
@@ -503,7 +506,10 @@ export const policyDocumentEditSubmitController = {
         }
       }
     } catch (err) {
-      request.logger.error({ err }, 'Failed to update policy document')
+      request.logger.error(
+        { err, stack: err.stack },
+        'Failed to update policy document'
+      )
       saveMessage = 'An error occurred while saving changes. Please try again.'
       savedDocument = {
         documentId,
@@ -670,7 +676,10 @@ export const policyDocumentNewSubmitController = {
         }`
       }
     } catch (err) {
-      request.logger.error({ err }, 'Failed to create policy document')
+      request.logger.error(
+        { err, stack: err.stack },
+        'Failed to create policy document'
+      )
       saveMessage =
         'An error occurred while creating the document. Please try again.'
     }
@@ -706,7 +715,10 @@ export const policyDocumentDeleteController = {
           request.logger
         )
       } catch (err) {
-        request.logger.error({ err }, 'Failed to delete policy document')
+        request.logger.error(
+          { err, stack: err.stack },
+          'Failed to delete policy document'
+        )
       }
     }
 
