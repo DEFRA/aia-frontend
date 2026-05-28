@@ -104,7 +104,7 @@ export const config = convict({
   useMockData: {
     doc: 'When true, if a backend API call fails the UI will display data from local mock JSON files. When false, API failures redirect to the GOV.UK error page.',
     format: Boolean,
-    default: !isProduction,
+    default: false,
     env: 'USE_MOCK_DATA'
   },
   result: {

@@ -7,7 +7,8 @@ export default defineConfig({
     clearMocks: true,
     include: ['test/**/*.test.js'],
     env: {
-      MOCK_DATA_RESULT: 'false'
+      MOCK_DATA_RESULT: 'false',
+      USE_MOCK_DATA: 'true'
     },
     coverage: {
       provider: 'v8',
