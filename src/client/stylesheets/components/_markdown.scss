@@ -23,6 +23,11 @@
   border: 1px solid #b1b4b6;
 }
 
+.markdown-content td a {
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
+
 .markdown-content pre {
   background-color: #f3f2f1;
   padding: 1em;

@@ -59,7 +59,12 @@ function wrapSectionsInDetails(element) {
       currentDetails.classList.add('govuk-details')
 
       // Open "Final Evaluation Summary" by default
-      if (child.textContent.trim().toLowerCase().includes('final evaluation summary')) {
+      if (
+        child.textContent
+          .trim()
+          .toLowerCase()
+          .includes('final evaluation summary')
+      ) {
         currentDetails.setAttribute('open', '')
       }
 
