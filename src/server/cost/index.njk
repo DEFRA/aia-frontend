@@ -83,7 +83,7 @@
           <td class="govuk-table__cell cost-table__agent-indent"></td>
           <td class="govuk-table__cell"></td>
           <td class="govuk-table__cell">
-            {{ agent.name }}
+            {{ agent.name | capitalize }}
           </td>
           <td class="govuk-table__cell govuk-table__cell--numeric">{{ agent.inputTokens | formatNumber }}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric">{{ agent.outputTokens | formatNumber }}</td>

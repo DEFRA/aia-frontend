@@ -22,9 +22,9 @@ function getErrorContent(statusCode) {
       }
     default:
       return {
-        pageTitle: 'Sorry, there is a problem with the service',
-        heading: 'Sorry, there is a problem with the service',
-        message: 'Try again later.',
+        pageTitle: 'Sorry, something went wrong',
+        heading: 'Sorry, something went wrong',
+        message: 'Please try again later.',
         linkText: 'Go back to the home page',
         linkHref: '/home'
       }

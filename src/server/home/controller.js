@@ -128,7 +128,10 @@ export const homeController = {
       }
     } catch (err) {
       if (err.isBoom) throw err
-      request.logger.error({ err }, 'Failed to fetch upload history')
+      request.logger.error(
+        { err, stack: err.stack },
+        'Failed to fetch upload history'
+      )
       if (config.get('useMockData')) {
         useFallback = true
       } else {
@@ -257,7 +260,7 @@ export const uploadController = {
         request.yar.flash('uploadError', errorMessage)
       }
     } catch (err) {
-      request.logger.error({ err }, 'Upload request error')
+      request.logger.error({ err, stack: err.stack }, 'Upload request error')
       request.yar.flash(
         'uploadError',
         'The document could not be uploaded due to a network error. Please try again.'
@@ -289,7 +292,10 @@ export const pollStatusController = {
         return h.response(data).type('application/json')
       }
     } catch (err) {
-      request.logger.error({ err }, 'Failed to fetch processing status')
+      request.logger.error(
+        { err, stack: err.stack },
+        'Failed to fetch processing status'
+      )
     }
     return h.response({ processingDocumentIds: [] }).type('application/json')
   }
