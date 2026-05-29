@@ -163,10 +163,7 @@ export default {
       patterns: [
         {
           from: path.join(govukFrontendPath, 'dist/govuk/assets'),
-          to: 'assets',
-          globOptions: {
-            ignore: [path.join(govukFrontendPath, 'dist/govuk/assets/images')]
-          }
+          to: 'assets'
         }
       ]
     })
