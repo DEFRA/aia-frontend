@@ -2,6 +2,14 @@ import { statusCodes } from '../common/constants/status-codes.js'
 
 function getErrorContent(statusCode) {
   switch (statusCode) {
+    case statusCodes.payloadTooLarge:
+      return {
+        pageTitle: 'Sorry, something went wrong',
+        heading: 'Sorry, something went wrong',
+        message: 'Please try again later.',
+        linkText: 'Go back to the home page',
+        linkHref: '/home'
+      }
     case statusCodes.unauthorized:
       return {
         pageTitle: 'You are not authorised to view this page',
@@ -19,6 +27,14 @@ function getErrorContent(statusCode) {
           'You do not have permission to access this page. Contact the DEFRA helpdesk if you think this is wrong.',
         linkText: 'Go to the start page',
         linkHref: '/'
+      }
+    case statusCodes.internalServerError:
+      return {
+        pageTitle: 'Sorry, something went wrong',
+        heading: 'Sorry, something went wrong',
+        message: 'Please try again later.',
+        linkText: 'Go back to the home page',
+        linkHref: '/home'
       }
     default:
       return {
