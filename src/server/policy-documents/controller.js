@@ -83,12 +83,7 @@ function normalizeDocuments(body) {
         editHref: `/policy-documents/edit?documentId=${encodeURIComponent(id)}`
       }
     })
-    .sort((a, b) => {
-      if (!a.updatedAt && !b.updatedAt) return 0
-      if (!a.updatedAt) return 1
-      if (!b.updatedAt) return -1
-      return new Date(b.updatedAt) - new Date(a.updatedAt)
-    })
+    .sort((a, b) => new Date(b.updatedAt ?? 0) - new Date(a.updatedAt ?? 0))
 
   return {
     documents,
