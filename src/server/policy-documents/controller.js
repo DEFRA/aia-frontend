@@ -69,19 +69,26 @@ function normalizeDocuments(body) {
     return { documents: [], total: 0 }
   }
 
-  const documents = rawDocuments.map((doc, index) => {
-    const id = doc.url_id ?? doc.urlId ?? `policy-doc-${index + 1}`
-    return {
-      documentId: id,
-      title: doc.filename ?? 'Untitled policy document',
-      category: doc.category ?? 'N/A',
-      type: doc.source ?? 'N/A',
-      sourceUrl: sanitizeSourceUrl(doc.url ?? ''),
-      isActive: Boolean(doc.isactive ?? doc.isActive ?? true),
-      updatedAt: toDisplayDate(doc.updatedAt),
-      editHref: `/policy-documents/edit?documentId=${encodeURIComponent(id)}`
-    }
-  })
+  const documents = rawDocuments
+    .map((doc, index) => {
+      const id = doc.url_id ?? doc.urlId ?? `policy-doc-${index + 1}`
+      return {
+        documentId: id,
+        title: doc.filename ?? 'Untitled policy document',
+        category: doc.category ?? 'N/A',
+        type: doc.source ?? 'N/A',
+        sourceUrl: sanitizeSourceUrl(doc.url ?? ''),
+        isActive: Boolean(doc.isactive ?? doc.isActive ?? true),
+        updatedAt: toDisplayDate(doc.updatedAt),
+        editHref: `/policy-documents/edit?documentId=${encodeURIComponent(id)}`
+      }
+    })
+    .sort((a, b) => {
+      if (!a.updatedAt && !b.updatedAt) return 0
+      if (!a.updatedAt) return 1
+      if (!b.updatedAt) return -1
+      return new Date(b.updatedAt) - new Date(a.updatedAt)
+    })
 
   return {
     documents,
