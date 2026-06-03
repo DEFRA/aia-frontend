@@ -58,7 +58,8 @@ jobs:
           echo "REDIS_PORT: ${{ vars.REDIS_PORT || '6379 (default)' }}"
           echo "USE_SINGLE_INSTANCE_CACHE: ${{ vars.USE_SINGLE_INSTANCE_CACHE || 'true (default)' }}"
           echo "REDIS_TLS: ${{ vars.REDIS_TLS || 'true (default)' }}"
-          
+          echo "MAX_UPLOAD_FILE_SIZE_MB: ${{ vars.MAX_UPLOAD_FILE_SIZE_MB || '20 (default)' }}"
+
           echo ""
           echo "✓ All validations passed"
 
@@ -75,6 +76,7 @@ jobs:
           echo "REDIS_PORT=${{ vars.REDIS_PORT || '6379 (default)' }}"
           echo "USE_SINGLE_INSTANCE_CACHE=${{ vars.USE_SINGLE_INSTANCE_CACHE || 'true (default)' }}"
           echo "REDIS_TLS=${{ vars.REDIS_TLS || 'true (default)' }}"
+          echo "MAX_UPLOAD_FILE_SIZE_MB=${{ vars.MAX_UPLOAD_FILE_SIZE_MB || '20 (default)' }}"
           echo ""
           echo "=== Build Arguments (Secrets - value check only) ==="
           test -n "${{ secrets.ACCESS_CODE }}" && echo "✓ ACCESS_CODE: (set)" || echo "✗ ACCESS_CODE: (empty)"

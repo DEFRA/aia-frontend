@@ -91,6 +91,7 @@ jobs:
             REDIS_PORT=${{ vars.REDIS_PORT || '6379' }}
             USE_SINGLE_INSTANCE_CACHE=${{ vars.USE_SINGLE_INSTANCE_CACHE || 'true' }}
             REDIS_TLS=${{ vars.REDIS_TLS || 'true' }}
+            MAX_UPLOAD_FILE_SIZE_MB=${{ vars.MAX_UPLOAD_FILE_SIZE_MB || '20' }}
             ACCESS_CODE=${{ secrets.ACCESS_CODE }}
             ACCESS_CODE_HASH=${{ secrets.ACCESS_CODE_HASH }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}

@@ -280,7 +280,7 @@ export const config = convict({
     maxFileSizeMb: {
       doc: 'Maximum allowed upload file size in MB. Change MAX_UPLOAD_FILE_SIZE_MB to configure.',
       format: Number,
-      default: 50,
+      default: 20,
       env: 'MAX_UPLOAD_FILE_SIZE_MB'
     }
   },
