@@ -60,13 +60,13 @@ describe('validateDocxFile', () => {
   })
 
   describe('2. File size check', () => {
-    test('rejects file larger than default 50 MB limit', async () => {
+    test('rejects file larger than default 20 MB limit', async () => {
       const file = makeFile([...ZIP_MAGIC, ...new Array(4).fill(0)])
       // Fake a huge size
-      Object.defineProperty(file, 'size', { value: 51 * 1024 * 1024 })
+      Object.defineProperty(file, 'size', { value: 21 * 1024 * 1024 })
       const result = await validateDocxFile(file)
       expect(result.valid).toBe(false)
-      expect(result.message).toContain('50 MB')
+      expect(result.message).toContain('20 MB')
     })
 
     test('rejects file larger than custom maxFileSizeBytes', async () => {
@@ -89,10 +89,10 @@ describe('validateDocxFile', () => {
       expect(result.message).toContain('File exceeds the maximum allowed size')
     })
 
-    test('falls back to default 50 MB when maxFileSizeBytes is 0', async () => {
+    test('falls back to default 20 MB when maxFileSizeBytes is 0', async () => {
       const bytes = validDocxBytes()
       const file = makeFile(bytes)
-      // 0 is invalid — should fall back to 50 MB default, so a 1-byte file passes size check
+      // 0 is invalid — should fall back to 20 MB default, so a 1-byte file passes size check
       const result = await validateDocxFile(file, { maxFileSizeBytes: 0 })
       // file is tiny, so size check passes; should be valid if rest passes
       expect(result.valid).toBe(true)
