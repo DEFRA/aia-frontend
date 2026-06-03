@@ -10,6 +10,7 @@ import {
 
 import { initUploadHandler } from './upload-handler.js'
 import { createPoller } from './status-poller.js'
+import { cleanUrl } from './url-cleaner.js'
 
 createAll(Button)
 createAll(Checkboxes)
@@ -81,3 +82,4 @@ function initStatusPolling() {
 
 initStatusPolling()
 initDeleteConfirmation()
+cleanUrl()

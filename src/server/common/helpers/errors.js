@@ -29,9 +29,10 @@ export function catchAll(request, h) {
     request.logger.error(response?.stack)
   }
 
-  // Redirect 401 and 500+ errors to the dedicated error page
+  // Redirect 401, 413, and 500+ errors to the dedicated error page
   if (
     statusCode === statusCodes.unauthorized ||
+    statusCode === statusCodes.payloadTooLarge ||
     statusCode >= statusCodes.internalServerError
   ) {
     if (request.path !== '/error') {
