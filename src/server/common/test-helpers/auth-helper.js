@@ -1,11 +1,8 @@
-import { config } from '../../../config/config.js'
 
-/**
- * Submits the access code form and returns the session cookie string
- * so that subsequent inject calls can access protected routes.
- */
-export async function getAuthCookie(server) {
-  const accessCode = config.get('accessCode')
+export async function getAuthCookie(server, accessCode) {
+  if (!accessCode) {
+    throw new Error('accessCode is required to obtain an auth cookie')
+  }
   const res = await server.inject({
     method: 'POST',
     url: '/',
