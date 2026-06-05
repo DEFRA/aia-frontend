@@ -29,6 +29,10 @@
   display: none;
 }
 
+.spinner {
+  margin-top: 10px;
+}
+
 .loading-message {
   display: none;
 
@@ -156,6 +160,14 @@
 .upload-history-timestamp {
   width: 190px;
   min-width: 190px;
+  white-space: nowrap;
+}
+
+.upload-history-template-type {
+  white-space: nowrap;
+}
+
+.upload-history-action {
   white-space: nowrap;
 }
 
