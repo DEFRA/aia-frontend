@@ -1,9 +1,6 @@
 const TEST_ACCESS_CODE = 'test-access-code'
 
-export async function getAuthCookie(
-  server,
-  accessCode = TEST_ACCESS_CODE
-) {
+export async function getAuthCookie(server, accessCode = TEST_ACCESS_CODE) {
   const originalFetch = global.fetch
   global.fetch = async (url, opts) => {
     if (typeof url === 'string' && url.includes('/access-code/validate')) {
