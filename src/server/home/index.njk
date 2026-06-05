@@ -7,7 +7,7 @@
 
 {% block content %}
 
-<div id="errorSummary" class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" {% if not uploadError %}hidden style="display:none"{% endif %}>
+<div id="errorSummary" class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" {% if not uploadError %}hidden{% endif %}>
   <h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>
   <div class="govuk-error-summary__body">
     <ul class="govuk-list govuk-error-summary__list" id="errorSummaryList">
@@ -46,7 +46,7 @@
         accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         aria-describedby="fileError fileDropHint"
         data-max-file-size-bytes="{{ maxUploadFileSizeBytes }}">
-      <div id="fileSpinner" class="spinner" aria-live="polite" aria-busy="false" style="margin-top:10px;" hidden>
+      <div id="fileSpinner" class="spinner" aria-live="polite" aria-busy="false" hidden>
         <span class="govuk-visually-hidden">Uploading, please wait…</span>
       </div>
     </div>
@@ -69,10 +69,10 @@
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
         <th class="govuk-table__header">Filename</th>
-        <th class="govuk-table__header">Template type</th>
+        <th class="govuk-table__header upload-history-template-type">Template type</th>
         <th class="govuk-table__header">Status</th>
         <th class="govuk-table__header upload-history-timestamp">Timestamp</th>
-        <th class="govuk-table__header">Action</th>
+        <th class="govuk-table__header upload-history-action">Action</th>
       </tr>
     </thead>
     <tbody class="govuk-table__body">
@@ -82,7 +82,7 @@
         <td class="govuk-table__cell">{{ upload.templateType }}</td>
         <td class="govuk-table__cell"><span class="status-badge status-{{ upload.status | lower }}">{{ statusLabels[upload.status] or upload.status }}</span></td>
         <td class="govuk-table__cell upload-history-timestamp">{{ upload.createdAt | toUkDateTime }}</td>
-        <td class="govuk-table__cell">
+        <td class="govuk-table__cell upload-history-action">
           {% if upload.status == 'COMPLETE' or upload.status == 'PARTIAL_COMPLETE' %}
             <a href="/result?documentId={{ upload.documentId }}" class="govuk-link">View Results</a>
           {% elif upload.status == 'ERROR' %}
