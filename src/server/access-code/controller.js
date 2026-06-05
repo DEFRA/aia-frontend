@@ -1,12 +1,46 @@
-import crypto from 'node:crypto'
 import { config } from '../../config/config.js'
+import { fetchWithLog } from '../common/helpers/fetch-with-log.js'
 
-function isValidAccessCode(code) {
-  const validCode = config.get('accessCode')
-  const validHash = config.get('accessCodeHash')
-  if (code !== validCode) return false
-  const hash = crypto.createHash('sha256').update(code).digest('hex')
-  return hash === validHash
+const PAGE_TITLE = 'Enter access code'
+const MAX_LENGTH = 36
+
+function renderForm(h, options = {}) {
+  return h.view('access-code/index', {
+    pageTitle: PAGE_TITLE,
+    isAuthenticationRequired: false,
+    ...options
+  })
+}
+
+/**
+ * Calls the core_backend access-code validation endpoint.
+ * Backend reads the canonical access code + SHA-256 hash from AWS SSM.
+ *
+ * Contract:
+ *   200 → code accepted
+ *   403 → code rejected (or any backend-side failure)
+ *   anything else → treat as failure
+ */
+async function validate(accessCode, logger) {
+  const url = `${config.get('backendApiUrl')}/access-code/validate`
+  try {
+    const res = await fetchWithLog(
+      url,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ accessCode })
+      },
+      logger
+    )
+    return res.status === 200
+  } catch (err) {
+    logger?.error?.(
+      { err, url },
+      'Access-code validation request to backend failed'
+    )
+    return false
+  }
 }
 
 export const accessCodeGetController = {
@@ -14,10 +48,7 @@ export const accessCodeGetController = {
     auth: false
   },
   handler(_request, h) {
-    return h.view('access-code/index', {
-      pageTitle: 'Enter access code',
-      isAuthenticationRequired: false
-    })
+    return renderForm(h)
   }
 }
 
@@ -25,7 +56,7 @@ export const accessCodePostController = {
   options: {
     auth: false
   },
-  handler(request, h) {
+  async handler(request, h) {
     const { accessCode } = request.payload || {}
 
     if (!accessCode || accessCode.trim() === '') {
@@ -34,28 +65,22 @@ export const accessCodePostController = {
         { errorMessage },
         'Access code submission rejected: empty value'
       )
-      return h.view('access-code/index', {
-        pageTitle: 'Enter access code',
-        isAuthenticationRequired: false,
-        errorMessage
-      })
+      return renderForm(h, { errorMessage })
     }
 
-    if (accessCode.length > 36) {
-      const errorMessage = 'Access code must be 36 characters or fewer'
+    if (accessCode.length > MAX_LENGTH) {
+      const errorMessage = `Access code must be ${MAX_LENGTH} characters or fewer`
       request.logger.warn(
         { length: accessCode.length, errorMessage },
         'Access code submission rejected: exceeds maximum length'
       )
-      return h.view('access-code/index', {
-        pageTitle: 'Enter access code',
-        isAuthenticationRequired: false,
-        errorMessage
-      })
+      return renderForm(h, { errorMessage })
     }
 
-    if (isValidAccessCode(accessCode)) {
-      request.logger.info('Access code accepted')
+    const accepted = await validate(accessCode, request.logger)
+
+    if (accepted) {
+      request.logger.info('Access code accepted by backend')
       request.yar.set('accessGranted', true)
       request.yar.set('lastActivity', Date.now())
       return h.redirect('/home')
@@ -64,12 +89,8 @@ export const accessCodePostController = {
     const errorMessage = 'Enter your valid access code'
     request.logger.warn(
       { errorMessage },
-      'Access code submission rejected: invalid code'
+      'Access code submission rejected: backend returned non-200 (403 or failure)'
     )
-    return h.view('access-code/index', {
-      pageTitle: 'Enter access code',
-      isAuthenticationRequired: false,
-      errorMessage
-    })
+    return renderForm(h, { errorMessage })
   }
 }

@@ -1,5 +1,15 @@
 import { createServer } from '../../../src/server/server.js'
 import { statusCodes } from '../../../src/server/common/constants/status-codes.js'
+import { vi } from 'vitest'
+
+function mockBackendValidate(status) {
+  return vi.fn(async (url) => {
+    if (typeof url === 'string' && url.includes('/access-code/validate')) {
+      return new Response(null, { status })
+    }
+    throw new Error(`Unexpected fetch call to ${url}`)
+  })
+}
 
 describe('#accessCodeGetController', () => {
   let server
@@ -35,13 +45,16 @@ describe('#accessCodeGetController', () => {
 
 describe('#accessCodePostController', () => {
   let server
+  let originalFetch
 
   beforeAll(async () => {
     server = await createServer()
     await server.initialize()
+    originalFetch = global.fetch
   })
 
   afterAll(async () => {
+    global.fetch = originalFetch
     await server.stop({ timeout: 0 })
   })
 
@@ -94,6 +107,8 @@ describe('#accessCodePostController', () => {
   })
 
   test('Should redirect to /home when valid access code is provided', async () => {
+    global.fetch = mockBackendValidate(200)
+
     const { statusCode, headers } = await server.inject({
       method: 'POST',
       url: '/',
@@ -106,6 +121,8 @@ describe('#accessCodePostController', () => {
   })
 
   test('Should show error when access code is invalid', async () => {
+    global.fetch = mockBackendValidate(403)
+
     const { result, statusCode } = await server.inject({
       method: 'POST',
       url: '/',
@@ -118,6 +135,8 @@ describe('#accessCodePostController', () => {
   })
 
   test('Should set session values on successful login', async () => {
+    global.fetch = mockBackendValidate(200)
+
     const res = await server.inject({
       method: 'POST',
       url: '/',
