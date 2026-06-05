@@ -1,4 +1,3 @@
-
 export async function getAuthCookie(server, accessCode) {
   if (!accessCode) {
     throw new Error('accessCode is required to obtain an auth cookie')
