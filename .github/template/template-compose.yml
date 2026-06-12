@@ -12,9 +12,6 @@ services:
   service:
     build:
       context: ../..
-      args:
-        - REDIS_HOST=redis
-        - REDIS_PORT=6379
     container_name: cdp-node-frontend-template
     networks:
       - cdp-network

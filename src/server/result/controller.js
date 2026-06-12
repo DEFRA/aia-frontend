@@ -61,7 +61,10 @@ function extractMarkdownContent(payload) {
 
 function getMockResultContent(documentId) {
   const mockFileName = resolveMockFileName(documentId)
-  const resultsDataRaw = readFileSync(`${__dirname}/${mockFileName}`, 'utf8')
+  const resultsDataRaw = readFileSync(
+    `${__dirname}/../mock-data/${mockFileName}`,
+    'utf8'
+  )
   const resultsData = JSON.parse(resultsDataRaw)
   return extractMarkdownContent(resultsData)
 }

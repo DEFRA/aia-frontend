@@ -15,7 +15,7 @@ const STATUS_LABELS = {
 }
 
 const require = createRequire(import.meta.url)
-const fallbackUploads = require('./uploads.json')
+const fallbackUploads = require('../mock-data/uploads.json')
 
 /**
  * Build GOV.UK pagination items with ellipsis for large page counts.

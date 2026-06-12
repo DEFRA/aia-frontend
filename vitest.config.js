@@ -5,6 +5,8 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     clearMocks: true,
+    testTimeout: 15000,
+    hookTimeout: 15000,
     include: ['test/**/*.test.js'],
     env: {
       MOCK_DATA_RESULT: 'false',

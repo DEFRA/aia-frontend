@@ -5,7 +5,7 @@ import { buildBackendHeaders } from '../common/helpers/backend-headers.js'
 import { fetchWithLog } from '../common/helpers/fetch-with-log.js'
 
 const require = createRequire(import.meta.url)
-const fallbackPolicyDocuments = require('./policy-documents.json')
+const fallbackPolicyDocuments = require('../mock-data/policy-documents.json')
 
 function buildPaginationItems(currentPage, totalPages) {
   if (totalPages <= 1) return []
