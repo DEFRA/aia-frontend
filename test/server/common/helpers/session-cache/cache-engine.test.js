@@ -17,8 +17,14 @@ vi.mock('ioredis', () => ({
     return { on: () => ({}) }
   })
 }))
-vi.mock('@hapi/catbox-redis')
-vi.mock('@hapi/catbox-memory')
+vi.mock('@hapi/catbox-redis', () => {
+  const Engine = vi.fn()
+  return { default: { Engine }, Engine }
+})
+vi.mock('@hapi/catbox-memory', () => {
+  const Engine = vi.fn()
+  return { default: { Engine }, Engine }
+})
 vi.mock('../../../../../src/server/common/helpers/logging/logger.js', () => ({
   createLogger: () => ({
     info: (...args) => mockLoggerInfo(...args),
