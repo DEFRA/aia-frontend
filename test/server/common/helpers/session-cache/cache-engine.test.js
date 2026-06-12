@@ -18,8 +18,8 @@ vi.mock('ioredis', () => ({
   })
 }))
 vi.mock('@hapi/catbox-redis', () => {
-  const Engine = vi.fn()
-  return { default: { Engine }, Engine }
+  const MockClass = vi.fn()
+  return { default: MockClass, Engine: MockClass }
 })
 vi.mock('@hapi/catbox-memory', () => {
   const Engine = vi.fn()
