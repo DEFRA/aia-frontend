@@ -77,24 +77,6 @@ jobs:
         with:
           context: .
           target: production
-          build-args: |
-            GIT_COMMIT=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
-            BUILD_VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
-            SERVICE_VERSION=${{ vars.SERVICE_VERSION }}            
-            BACKEND_API_URL=${{ vars.BACKEND_API_URL }}            
-            FEATURE_SHOW_COST_USAGE=${{ vars.FEATURE_SHOW_COST_USAGE }}
-            FEATURE_SHOW_POLICY_DOCUMENTS=${{ vars.FEATURE_SHOW_POLICY_DOCUMENTS }}
-            REDIS_HOST=${{ vars.REDIS_HOST }}
-            REDIS_PORT=${{ vars.REDIS_PORT || '6379' }}
-            USE_SINGLE_INSTANCE_CACHE=${{ vars.USE_SINGLE_INSTANCE_CACHE || 'true' }}
-            REDIS_TLS=${{ vars.REDIS_TLS || 'true' }}
-            REDIS_PORT=${{ vars.REDIS_PORT || '6379' }}
-            USE_SINGLE_INSTANCE_CACHE=${{ vars.USE_SINGLE_INSTANCE_CACHE || 'true' }}
-            REDIS_TLS=${{ vars.REDIS_TLS || 'true' }}
-            MAX_UPLOAD_FILE_SIZE_MB=${{ vars.MAX_UPLOAD_FILE_SIZE_MB || '20' }}
-            ACCESS_CODE=${{ secrets.ACCESS_CODE }}
-            ACCESS_CODE_HASH=${{ secrets.ACCESS_CODE_HASH }}
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
           push: true
           labels: ${{ steps.meta.outputs.labels }}
           tags: ${{ steps.meta.outputs.tags }}
